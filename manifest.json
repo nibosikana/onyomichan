@@ -1,0 +1,35 @@
+{
+  "manifest_version": 2,
+  "name": "onj-yomi",
+  "description": "おんJを読み上げる拡張機能",
+  "version": "0.7",
+  "browser_action": {
+       //"default_icon": "",
+      "default_title": "onj-yomi",
+      "default_popup":"popup.html"
+
+},
+"content_scripts": [
+    {
+         "matches":  ["http://hayabusa.open2ch.net/test/read.cgi/livejupiter/*"],
+        "js": ["jquery-3.2.1.min.js","contentscript.js"],
+        "css":["style.css"]
+    }
+],
+
+// "icons":{
+//   "16": ".png",
+//    "48": ".png",
+//    "128": ".png"
+// },
+
+"permissions": [
+  "tabs"
+],
+"web_accessible_resources": [
+    "popup.html"
+
+  ]
+
+}
+
