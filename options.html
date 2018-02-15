@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<script src="jquery-3.2.1.min.js"></script>
+		<script src="options.js"></script>
+		<link rel="stylesheet" href="style.css">
+</head>
+<body>
+		<p><a href="http://open2ch.net/" target="blank_">おーぷん2ちゃんねる</a>のスレを読み上げます</p>
+		<h1 id="setting">設定</h1>
+
+		<h3>置換</h3>
+		<div>文字の読み方を変更することができます。</div>
+		<div class="form-item">
+				<label>置換前:</label>
+				<input type="text" id="before" name="before" placeholder="置換前" />
+		</div>
+		<div class="form-item">
+				<label>置換後:</label>
+				<input type="text" id="after" name="after" placeholder="置換後" />
+		</div>
+		<input type="submit" id="add" value="追加">
+		<input type="submit" id="save" value="保存">
+		<span id="savetext" style="transition: opacity 0.4s ease-out; opacity: 0; color:green">保存されました</span>
+		<div id="attention">※変更したら必ず保存してください</div>
+		<table class="table" id="table">
+				<tr>
+						<th>
+								置換前
+						</th>
+						<th>
+								置換後
+						</th>
+						<th id="del">
+								削除
+						</th>
+				</tr>
+		</table>
+
+		<h3>その他</h3>
+		<input type="checkbox" name="title-read" id="title-read">
+		<label for="title-read">スレタイも読み上げる</label>
+		<br><input type="checkbox" name="url-read" id="url-read">
+		<label for="url-read">アンカーとURLを読み上げない</label>
+		<br><label for="length">最大文字数:</label>
+		<input type="number" id="length" min="1" max="2000" value="2000" style="width:50px">
+		<div><input type="submit" id="save-other" value="保存"></div>
+
+		<span id="savetext-other" style="transition: opacity 0.4s ease-out; opacity: 0; color:green">保存されました</span>
+
+</body>

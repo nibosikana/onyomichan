@@ -1,111 +1,221 @@
-
-//htmlファイルを読み込む
-// var mesg = document.querySelector('.mesg');
-// mesg = '<test>' + mesg.outerHTML + '</test>';
-// console.log(mesg);
-
-//javascriptでもhtmlファイル読み込みやってみた
-// $.get(chrome.extension.getURL('./popup.html'),function(data){
-//     $($.parseHTML(data))
-//       .insertAfter('h1');
-//   });
-
-
-//areaタグをddタグの後ろに移動したい（試行錯誤）
-// $('ares').wrap('<res class="aiu">');
-// $('dd').wrap('<tex>');
-//$("ares").insertAfter("dd");
-
-
-
+//html読み込み
+$.get(chrome.extension.getURL('./button.html'), function (data) {
+    $($.parseHTML(data)).appendTo('body');
+});
 //リロードした時にキャンセルする
-window.addEventListener('beforeunload', function(){
+window.addEventListener('beforeunload', function () {
     speechSynthesis.cancel();
-  });
-
-
-//ボタン設置（仮）
-$('h1').after('<button id="reset-btn">停止</button>');
-$('h1').after('<button id="resume-btn">再開</button>');
-$('h1').after('<button id="stop-btn">一時停止</button>');
-$('h1').after('<button id="start-btn">開始</button>');
-
-
-$(function () {
-    $('dd').attr('class', 'tx');
+    mo.disconnect();
 });
-$(function () {
-    $('dd').attr('id', 'tx');
-});
-$(function () {
-    $('ares').attr({'id':'ares','class':'ares'});
-});
+//chrome.storage
+chrome.storage.local.get(function (items) {
+    var words = items.words || {
+            before: ['https://[!-~]+', 'http://[!-~]+', '>>', '!aku', 'www*'],
+            after: ['URL省略。', 'URL省略。', 'アンカー', 'アク禁', 'ワラワラ']
+    };
+    console.log(words);
+    var title_read = items.title_read || false;
+    console.log(title_read);
+    items.length = items.length || 2000;
+    console.log(items.length)
+    //再生
+    $('#start-btn').click(function () {
+            speechSynthesis.cancel();
+            startEvent();
+    });
+    //一時停止（ストップ）
+    $('#stop-btn').click(function () {
+            speechSynthesis.pause();
+    });
+    //一時停止解除
+    $('#resume-btn').click(function () {
+            speechSynthesis.resume();
+    });
+    //リセット
+    $('#reset-btn').click(function () {
+            speechSynthesis.cancel();
+            mo.disconnect();
+            document.getElementById('newthread-btn').disabled = '';
+            document.getElementById('start-btn').disabled = '';
+    });
+    //キーボード操作
+    $(function ($) {
+            $(window).keydown(function (e) {
+                    //Ctrlキー+qキー
+                    if (event.ctrlKey) {
+                            if (e.keyCode === 81) {
+                                    speechSynthesis.cancel();
+                                    startEvent();
+                                    return false;
+                            }
+                    }
+                    //Ctrlキー+wキー   
+                    if (event.ctrlKey) {
+                            if (e.keyCode === 87) {
+                                    document.getElementById('newthread-btn').disabled = '';
+                                    document.getElementById('start-btn').disabled = '';
+                                    speechSynthesis.cancel();
+                                    mo.disconnect();
+                                    return false;
+                            }
+                    }
+                    //Ctrlキー+eキー   
+                    if (event.ctrlKey) {
+                            if (e.keyCode === 69) {
+                                    speechSynthesis.resume();
+                                    return false;
+                            }
+                    }
+                    //Ctrlキー+rキー   
+                    if (event.ctrlKey) {
+                            if (e.keyCode === 82) {
+                                    speechSynthesis.pause();
+                                    return false;
+                            }
+                    }
+            })
+    });
 
+    function startEvent() {
+            document.getElementById('newthread-btn').disabled = 'true';
+            document.getElementById('start-btn').disabled = 'true';
+            var number = document.getElementById('number').value;
+            var ti = document.getElementsByTagName('h1')[0].innerText;
+            var title = ti;
+            var text = [];
+            var tes = [];
+            var mm = number;
+            var aa = $(`ares[num=${mm}]`)[0];
+            var dd = document.getElementsByTagName('dd');
+            var are = document.getElementsByTagName('ares');
+            are = [].slice.call(are);
+            var index = are.indexOf(aa);
+            console.log(items.url_read)
+            console.log(items.length);
+            for (var i = index; i < dd.length; i++) {
+                    if (items.url_read === true) {
+                            var text = $($("dd")[i].outerHTML).children().empty().parent().text();
+                    } else {
+                            var text = $($("dd")[i].outerHTML).children('ares').empty().parent().text();
+                    }
+                    if (text.length < items.length) {
+                            tes.push(text);
+                    } else {
+                            console.log(text.length)
+                    }
+                    console.log(text)
+            }
+            test = tes.join('');
+            var thread = title + test;
+            console.log(words);
+            for (var i = 0; i < words.before.length; i++) {
+                    var aft = words.after[i];
+                    var targetStr = words.before[i];
+                    var regExp = new RegExp(targetStr, "g");
+                    thread = thread.replace(regExp, aft);
+                    console.log(regExp, aft);
+            }
+            var ss = new SpeechSynthesisUtterance();
+            if (title_read === true) {
+                    for (var i = 0; i < words.before.length; i++) {
+                            var aft = words.after[i];
+                            var targetStr = words.before[i];
+                            var regExp = new RegExp(targetStr, "g");
+                            thread = thread.replace(regExp, aft);
+                    }
+                    ss.text = thread;
+            } else {
+                    for (var i = 0; i < words.before.length; i++) {
+                            var aft = words.after[i];
+                            var targetStr = words.before[i];
+                            var regExp = new RegExp(targetStr, "g");
+                            test = test.replace(regExp, aft);
+                    }
+                    ss.text = test;
+            }
+            ss.rate = items.rate || 1;
+            ss.pitch = items.pitch || 1;
+            ss.volume = items.vol || 1;
+            ss.lang = 'ja';
+            speechSynthesis.speak(ss);
+            console.log(ss);
+            var target = document.getElementsByClassName('thread')[0];
 
-
-//開始ボタン
-document.getElementById('start-btn').onclick = function(){
-    
-
-    //ddタグを取得
-var str = document.getElementsByTagName("dd");
-
-
-
-    //スレの数だけ繰り返す
-    for(var i = 0; i < str.length; i++){
-
-        var thread = $($("dd")[i].outerHTML).children().empty().parent().text();
-         console.log(thread);
-        
-    //テキストを取得して、再生する
-    //var thread = str[i].childNodes[0].textContent;
-    //var thread = str[i].firstChild.textContent;
-    //console.log(thread);
-
-    var ss = new SpeechSynthesisUtterance (thread);
-    var voice = window.speechSynthesis.getVoices();
-
-    //音質の設定など
-    ss.lang = 'ja-JP'
-    ss.pitch = 1.5;
-    ss.volume = 0.1;
-    ss.rate = 1.2;
-    speechSynthesis.speak(ss);
-    
+            function newThread() {
+                    var hh = target.lastChild;
+                    var newth = [];
+                    if (items.url_read === true) {
+                            var newtt = $(hh.childNodes[2].outerHTML).children().empty().parent().text();
+                    } else {
+                            var newtt = $(hh.childNodes[2].outerHTML).children('ares').empty().parent().text();
+                    }
+                    if (newtt.length < items.length) {
+                            newth.push(newtt)
+                    } else {}
+                    newt = newth.join('');
+                    for (var i = 0; i < words.before.length; i++) {
+                            var aft = words.after[i];
+                            var targetStr = words.before[i];
+                            var regExp = new RegExp(targetStr, "g");
+                            newt = newt.replace(regExp, aft);
+                    }
+                    var ss = new SpeechSynthesisUtterance();
+                    ss.text = newt;
+                    ss.volume = items.vol || 1.0;
+                    ss.rate = items.rate || 1.0;
+                    ss.pitch = items.pitch || 1.0;
+                    ss.lang = 'ja';
+                    speechSynthesis.speak(ss);
+                    console.log(ss);
+            }
+            mo = new MutationObserver(newThread);
+            mo.observe(target, {
+                    childList: true
+            });
     }
-};
+    //新規スレ読み上げ
+    $('#newthread-btn').click(function () {
+            document.getElementById('newthread-btn').disabled = 'true';
+            document.getElementById('start-btn').disabled = 'true';
+            var target = document.getElementsByClassName('thread')[0];
 
-
-//一時停止（ストップ）
-document.getElementById('stop-btn').onclick = function(){
-    speechSynthesis.pause();
-};
-
-
-//一時停止解除
-document.getElementById('resume-btn').onclick = function(){
-    speechSynthesis.resume();
-};
- 
-
-//リセット
-document.getElementById('reset-btn').onclick = function(){
-    speechSynthesis.cancel();
-    
-};
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
- 
+            function newThread() {
+                    var hh = target.lastChild;
+                    var newth = [];
+                    if (items.url_read === true) {
+                            var newtt = $(hh.childNodes[2].outerHTML).children().empty().parent().text();
+                    } else {
+                            var newtt = $(hh.childNodes[2].outerHTML).children('ares').empty().parent().text();
+                    }
+                    if (newtt.length < items.length) {
+                            newth.push(newtt)
+                    } else {}
+                    newt = newth.join('');
+                    for (var i = 0; i < words.before.length; i++) {
+                            var aft = words.after[i];
+                            var targetStr = words.before[i];
+                            var regExp = new RegExp(targetStr, "g");
+                            newt = newt.replace(regExp, aft);
+                    }
+                    var ss = new SpeechSynthesisUtterance();
+                    ss.text = newt;
+                    ss.volume = items.vol || 1.0;
+                    ss.rate = items.rate || 1.0;
+                    ss.pitch = items.pitch || 1.0;
+                    ss.lang = 'ja';
+                    speechSynthesis.speak(ss);
+                    console.log(ss);
+            }
+            mo = new MutationObserver(newThread);
+            mo.observe(target, {
+                    childList: true
+            });
+    });
+    //新規スレ読み上げやめる
+    $('#newthread-stop-btn').click(function () {
+            document.getElementById('newthread-btn').disabled = '';
+            document.getElementById('start-btn').disabled = '';
+            speechSynthesis.cancel();
+            mo.disconnect();
+    });
+});
