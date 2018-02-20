@@ -5,24 +5,20 @@ chrome.storage.local.get(function (items) {
             items.tab = defaulttable;
             var table = document.getElementById('table');
             table.innerHTML = items.tab;
-    } else {
+    }
+     else {
             var table = document.getElementById('table');
             table.innerHTML = items.tab;
     }
-    console.log(items.tab);
-    console.log(items.words)
-    document.getElementById('title-read').checked = items.title_read;
-    document.getElementById('url-read').checked = items.url_read;
+    document.getElementById('title-read').checked = items.title_read||false;
+    document.getElementById('url-read').checked = items.url_read||false;
     document.getElementById('length').value = items.length || 2000;
-    console.log(items.title_read);
-    console.log(items.url_read);
-    console.log(items.length);
+
 });
 window.onload = function () {
     var add = document.getElementById('add');
     add.addEventListener('click', function () {
             if (document.getElementById('before').value == "" || document.getElementById('after').value == "") {
-                    alert('入力されていないため追加できません')
             } else {
                     var table = document.getElementById('table');
                     var before = document.getElementById('before').value;
