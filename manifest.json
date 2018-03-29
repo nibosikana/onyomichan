@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "おん読みちゃん",
   "description": "おーぷん２ちゃんねるのスレッドを読み上げる拡張機能です",
-  "version": "0.1.2",
+  "version": "0.1.4",
 
   "browser_action": {
     "default_title": "おん読みちゃんの設定をする",
@@ -16,17 +16,16 @@
 
 
 
-  "web_accessible_resources": [
-    " button.html"
-  ],
-
   "content_scripts": [
       {
     "matches": ["http://*.open2ch.net/test/*","http://*.open2ch.net//test/*"],
-
     "js": ["vue.min.js","jquery-3.2.1.min.js","contentscript.js"],
     "css":["style.css"]
       }
+  ],
+
+  "web_accessible_resources": [
+    "button.html"
   ],
 
   "icons":{

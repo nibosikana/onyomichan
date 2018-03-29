@@ -1,5 +1,5 @@
  //html読み込み
- $.get(chrome.extension.getURL('./button.html'), function (data) {
+ $.get(chrome.extension.getURL('button.html'), function (data) {
   $($.parseHTML(data)).appendTo('body');
 });
 window.addEventListener('beforeunload', function () {
