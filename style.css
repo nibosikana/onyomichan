@@ -1,61 +1,39 @@
 #start-btn {
   cursor: pointer;
+  background:none;
+  border:0;
+}
+
+#pause-btn {
+  cursor: pointer;
+  background:none;
+  border:0;
 }
 
 #stop-btn {
   cursor: pointer;
+  background:none;
+  border:0;
 }
 
-#resume-btn {
+#eye-btn {
   cursor: pointer;
+  background:none;
+  border:0;
+
 }
 
-#reset-btn {
+#slash-btn {
   cursor: pointer;
+  background:none;
+  border:0;
 }
 
 .button-box {
-  position: fixed;
   top: 5px;
   left: 100px;
-}
+  position: fixed;
 
-table {
-  table-layout: fixed;
-  width: 300px;
-  border-collapse: collapse;
-}
-
-table th {
-  color: #FF9800;
-  background: #fff5e5;
-  width: 150px;
-  border: 1px solid #DDD;
-  vertical-align: middle;
-}
-
-table td {
-  width: 150px;
-  border: 1px solid #DDD;
-  vertical-align: middle;
-}
-
-#del {
-  width: 48px;
-  border: 1px solid #DDD;
-  vertical-align: middle;
-}
-
-table tr:nth-child(odd) td {
-  background: #f2f2f2;
-}
-
-#attention {
-  color: red;
-}
-
-.popupbody {
-  background-color: rgb(250, 244, 226);
 }
 
 *:focus {

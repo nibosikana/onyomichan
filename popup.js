@@ -1,73 +1,136 @@
 window.onload = function () {
-        //数値を表示する
-        $(window).ready(function () {
-          $('#synRate').on('input', function () {
-            var rate = '#' + $(this).attr('data-input');
-            var val = $(this).val();
-            $(rate).val(val);
+  chrome.storage.sync.get(function (result) {
+    let voice = new Vue({
+      el: '.voice',
+      data: {
+        rv: result.voices[0],
+        pv: result.voices[1],
+        vv: result.voices[2]
+      },
+      computed: {
+        rate: function () {
+          return this.rv
+        },
+        pitch: function () {
+          return this.pv
+        },
+        volume: function () {
+          return this.vv
+        }
+      },
+      methods: {
+        save: function () {
+          let voices = [voice.rate, voice.pitch, voice.volume]
+          chrome.storage.sync.set({
+            voices: voices
+          }, function () {
+            console.log(voices);
           });
-          $('#synPitch').on('input', function () {
-            var pitch = '#' + $(this).attr('data-input');
-            var val = $(this).val();
-            $(pitch).val(val);
-          });
-          $('#synVol').on('input', function () {
-            var vol = '#' + $(this).attr('data-input');
-            var val = $(this).val();
-            $(vol).val(val);
-          });
-          //設定を保存する
-          $('#save').click(function () {
-            //レート、ピッチ、ボリュームを取得する
-            var rate_val = document.getElementById('synRate').value;
-            var pitch_val = document.getElementById('synPitch').value;
-            var vol_val = document.getElementById('synVol').value;
-            //storageに保存する
-            chrome.storage.local.set({
-              rate: rate_val
-            }, function () {});
-            chrome.storage.local.set({
-              pitch: pitch_val
-            }, function () {});
-            chrome.storage.local.set({
-              vol: vol_val
-            }, function () {});
-            var savepopup = document.getElementById('savepopuptext');
-            savepopup.style.opacity = 1;
-            window.setTimeout(function () {
-              var savepopup = document.getElementById('savepopuptext');
-              savepopup.style.opacity = 0;
-            }, 1500)
-          });
-        });
-        $('#test').click(function () {
+          saveMessage();
+        },
+        test: function () {
           speechSynthesis.cancel();
-          var rate_val = document.getElementById('synRate').value;
-          var pitch_val = document.getElementById('synPitch').value;
-          var vol_val = document.getElementById('synVol').value;
           var ss = new SpeechSynthesisUtterance();
-          ss.rate = rate_val;
-          ss.pitch = pitch_val;
-          ss.volume = vol_val;
+          ss.rate = voice.rate;
+          ss.pitch = voice.pitch;
+          ss.volume = voice.volume;
           ss.lang = 'ja';
           ss.text = '「おーーーぷんにちゃんねる」へようこそ'
           speechSynthesis.speak(ss);
+        }
+      }
+    });
+  });
+  let table = new Vue({
+    el: '#menu2',
+    methods: {
+      add: function () {
+        if (document.getElementById('before').value == "" || document.getElementById('after').value == "") {} else {
+          let table = document.getElementById('table')
+          let tr = table.insertRow(-1);
+          let td1 = tr.insertCell(-1);
+          let td2 = tr.insertCell(-1);
+          let td3 = tr.insertCell(-1);
+          td1.innerHTML = this.before;
+          td1.className = "bef"
+          td2.innerHTML = this.after;
+          td2.className = "aft"
+          td3.innerHTML = '<button class="btn btn-danger" id="delete">削除</button>';
+        }
+      },
+      save: function () {
+        saveMessage();
+        let bef = document.getElementsByClassName("bef");
+        let aft = document.getElementsByClassName("aft");
+        console.log(bef, aft)
+        var objbefore = []
+        var objafter = []
+        var forEach = Array.prototype.forEach;
+        forEach.call(bef, function (b) {
+          objbefore.push(b.textContent)
         });
-        //現在の値を表示
-        $(function () {
-          chrome.storage.local.get(function (items) {
-            items.vol = items.vol || 1.0;
-            console.log(items.vol);
-            document.getElementById('synVol').value = items.vol;
-            document.getElementById('input3').value = items.vol;
-            items.rate = items.rate || 1.0;
-            console.log(items.rate);
-            document.getElementById('synRate').value = items.rate;
-            document.getElementById('input1').value = items.rate;
-            items.pitch = items.pitch || 1.0;
-            console.log(items.pitch);
-            document.getElementById('synPitch').value = items.pitch;
-            document.getElementById('input2').value = items.pitch;
+        forEach.call(aft, function (a) {
+          objafter.push(a.textContent)
+        });
+        var obj = {
+          before: objbefore,
+          after: objafter
+        }
+        chrome.storage.sync.set({
+          obj: obj
+        }, function () {
+          console.log(obj);
+        });
+      }
+    }
+  })
+  $(document).on("click", "#delete", function () {
+    var a = $(this).closest('tr');
+    $(a).remove();
+  });
+  chrome.storage.sync.get(function (result) {
+    let other = new Vue({
+      el: '#other',
+      data: {
+        tr: result.other[0],
+        le: result.other[1]
+      },
+      methods: {
+        save: function () {
+          let title = document.getElementById("title-read").checked;
+          let len = document.getElementById("length").value;
+          let other = [title, len];
+          chrome.storage.sync.set({
+            other: other
+          }, function () {
+            console.log(other);
           });
-        });
-      };
+          saveMessage();
+        }
+      }
+    })
+  });
+  chrome.storage.sync.get(function (result) {
+    console.log(result.obj)
+    for (let i = 0; i < result.obj.before.length; i++) {
+      let table = document.getElementById("table");
+      let tr = table.insertRow(-1);
+      let td1 = tr.insertCell(-1);
+      let td2 = tr.insertCell(-1);
+      let td3 = tr.insertCell(-1);
+      td1.innerHTML = result.obj.before[i];
+      td1.className = "bef"
+      td2.innerHTML = result.obj.after[i];
+      td2.className = "aft"
+      td3.innerHTML = '<button class="btn btn-danger" id="delete">削除</button>';
+    }
+  })
+};
+
+function saveMessage() {
+  let st = document.getElementById('savetext');
+  st.style.opacity = 1;
+  window.setTimeout(function () {
+    st.style.opacity = 0;
+  }, 1500);
+}

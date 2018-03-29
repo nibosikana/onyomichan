@@ -1,25 +1,126 @@
-<!DOCTYPE html>
-<html>
+<html style="height:300px;width:420px;">
 <head>
-		<meta charset="UTF-8" />
-		<title>setting</title>
-		<script src="popup.js"></script>
-        <script src="jquery-3.2.1.min.js"></script>
-        <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <script src="vue.min.js" type="text/javascript"></script>
+  <script src="jquery-3.2.1.min.js" type="text/javascript"></script>
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <script src="popup.js" type="text/javascript"></script>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <script src="js/bootstrap-native.min.js" type="text/javascript"></script>
 
 </head>
-<body class="popupbody">
-		<h3>音声設定</h3>
-		<p>レート/ピッチ/ボリューム/を設定できます。</p>
-		<p><label>レート: <input id="synRate" type="range" data-input="input1" min="0.1" max="3.0" step="0.1" value="1.0" /></label>
-				<input type="text" name="input1" id="input1" value="1" size="4" maxlehgth="3" readonly></p>
-		<p><label>ピッチ: <input id="synPitch" type="range" data-input="input2" min="0.0" max="2.0" step="0.1" value="1.0" /></label>
-				<input type="text" name="input2" id="input2" value="1" size="4" maxlehgth="3" readonly></p>
-		<p><label>ボリューム: <input id="synVol" type="range" data-input="input3" min="0.0" max="1.0" step="0.1" value="1.0" /></label>
-                <input type="text" name="input3" id="input3" value="1" size="4" maxlehgth="3" readonly></p>
-        <span id="savepopuptext" style="transition: opacity 0.4s ease-out; opacity: 0; color:green">保存されました</span>                
-        <br><input type="submit" id="save" value="保存">
-		<input type="submit" id="test" value="テスト再生">
+<body>
+  <section class="panel panel-default">
+    <div class="panel-heading"><span class="glyphicon glyphicon-cog"></span>各種設定<span id="savetext" style="transition: opacity 0.4s ease-out; opacity: 0; color:green;float: right">保存されました</span></div>
+    <div class="panel-body">
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#menu1"><span class="glyphicon glyphicon-volume-up"></span>音声</a>
+        </li>
+
+        <li><a data-toggle="tab" href="#menu2"><span class="glyphicon glyphicon-resize-horizontal"></span>置換</a>
+        </li>
+
+        <li><a data-toggle="tab" href="#menu3"><span class="glyphicon glyphicon-wrench"></span>その他</a>
+        </li>
+
+        <li><a data-toggle="tab" href="#menu4"><span class="glyphicon glyphicon-info-sign"></span>使い方</a>
+        </li>
+
+      </ul>
+      <div class="tab-content">
+        <div id="menu1" class="tab-pane fade in active">
+          <h3>音声設定</h3>
+          <p>レート/ピッチ/ボリューム/を設定できます。</p>
+          <div class="voice">
+            <label>レート：</label>
+            <span v-text="rate"></span>
+            <input type="range" min="0.1" max="3" step="0.1" v-model="rv">
+            <label>ピッチ：</label>
+            <span v-text="pitch"></span>
+            <input type="range" min="0" max="2" step="0.1" v-model="pv">
+            <label>ボリューム：</label>
+            <span v-text="volume"></span>
+            <input type="range" min="0" max="1.0" step="0.1" v-model="vv">
+            <br>
+            <button id="save" class="btn btn-success" @click="save">保存</button>
+            <button id="test" class="btn btn-info" @click="test">テスト</button>
+          </div>
+        </div>
+
+        <div id="menu2" class="tab-pane fade">
+          <div class="table">
+            <h3>置換</h3>
+            <label>置換前:</label>
+            <input type="text" id="before" name="before" v-model="before" placeholder="置換前" />
+            <br>
+            <label>置換後:</label>
+            <input type="text" id="after" name="after" v-model="after" placeholder="置換後" />
+            <br>
+            <button id="add" class="btn btn-warning" @click="add">追加</button>
+            <button class="btn btn-success" @click="save">保存</button>
+          </div>
+
+
+
+          <table class="table" id="table">
+            <tr>
+              <th>置換前</th>
+              <th>置換後</th>
+              <th>削除</th>
+            </tr>
+          </table>
+        </div>
+
+        <div id="menu3" class="tab-pane fade">
+          <h3>その他の設定</h3>
+          <div id="other">
+            <input type="checkbox" class="form-check-input" name="title-read" id="title-read" v-model="tr">
+            <label for="title-read">スレタイも読み上げる</label>
+            <br>
+            <input type="number" class="form" id="length" min="1" max="2000" style="width:70px;" v-model="le">
+            <label for="length">文字以上のレスは読み上げない</label>
+            <br>
+            <button class="btn btn-success" @click="save">保存</button>
+          </div>
+        </div>
+
+        <div id="menu4" class="tab-pane fade">
+          <h3>使い方</h3>
+          <div><a href="http://hayabusa.open2ch.net" target="_blank">おーぷん2ch</a>のスレを読み上げるGoogle Chrome Extension</div>
+          <section>
+            <label>読み上げ</label>
+            <div><i class="fa fa-play fa-1x"></i>：読み上げが開始されます</div>
+            <div>レス番号を入力して再生ボタンを押すと、そこから再生されます</div>
+            <div>最後まで読み上げ終わると、自動的に新着レス監視モードに移ります</div>
+            <div><i class="fa fa-pause fa-1x"></i>：読み上げが一時停止されます</div>
+            <div><i class="fa fa-stop fa-1x"></i>：読み上げがリセットされます</div>
+            <div><i class="fa fa-eye fa-1x"></i>：新着レスを監視し、新しくレスが書き込まれるたびに読み上げます</div>
+            <div><i class="fa fa-eye-slash fa-1x"></i>：新着レス監視を停止します</div>
+          </section>
+          <section>
+            <label>音声設定</label>
+            <div>レート：読み上げの速度を変更できます</div>
+            <div>ピッチ：読み上げる声の高さを変更できます</div>
+            <div>ボリューム：読み上げの音量を変更できます</div>
+          </section>
+          <section>
+            <label>置換設定</label>
+            <div>文字の読み方を変更することができます</div>
+            <div>置換前に変更したい文字、置換後に読み方を入力してください</div>
+            <div>例）「なんでも実況J」➡︎「なんJ」</div>
+          </section>
+
+          <section>
+            <label>問い合わせ</label>
+            <div>不具合、要望、質問などはこちらまでお願いします➡︎<a href="https://twitter.com/ellreka" target="_blank">@ellreka</a></div>
+          </section>
+
+        </div>
+
+
+      </div>
+    </div>
+  </section>
 
 </body>
 </html>
