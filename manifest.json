@@ -1,30 +1,29 @@
 {
   "manifest_version": 2,
-  "name": "おん読みちゃん",
+  "name": "おんヨミちゃん",
   "description": "おーぷん２ちゃんねるのスレッドを読み上げる拡張機能です",
-  "version": "0.1.4",
+  "version": "0.1.5",
 
   "browser_action": {
-    "default_title": "おん読みちゃんの設定をする",
+    "default_title": "おんヨミちゃんの設定をする",
     "default_popup": "popup.html"
   },
 
-
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["background.js"],
+    "persistent": false
   },
-
-
 
   "content_scripts": [
       {
-    "matches": ["http://*.open2ch.net/test/*","http://*.open2ch.net//test/*"],
+    "matches": ["http://*.open2ch.net/test/read.cgi/*","http://*.open2ch.net//test/*"],
     "js": ["vue.min.js","jquery-3.2.1.min.js","contentscript.js"],
     "css":["style.css"]
       }
   ],
 
   "web_accessible_resources": [
+    "images/*.svg",
     "button.html"
   ],
 

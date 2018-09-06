@@ -1,39 +1,32 @@
-#start-btn {
-  cursor: pointer;
-  background:none;
-  border:0;
+@-webkit-keyframes zoom {
+  50% {
+    -webkit-transform: scale(1.05);
+  }
+}
+@keyframes zoom {
+  50% {
+    transform: scale(1.05);
+  }
 }
 
-#pause-btn {
-  cursor: pointer;
-  background:none;
-  border:0;
-}
-
-#stop-btn {
-  cursor: pointer;
-  background:none;
-  border:0;
-}
-
-#eye-btn {
-  cursor: pointer;
-  background:none;
-  border:0;
-
-}
-
-#slash-btn {
-  cursor: pointer;
-  background:none;
-  border:0;
-}
-
-.button-box {
+#buttonBox-onyomichan {
   top: 5px;
   left: 100px;
   position: fixed;
+}
 
+#buttonBox-onyomichan span {
+  cursor: pointer;
+}
+
+#buttonBox-onyomichan span img {
+  width: 28px;
+  margin: 8px;
+}
+
+#buttonBox-onyomichan span img:hover {
+  -webkit-animation: zoom .3s;
+  animation: zoom .3s;
 }
 
 *:focus {
