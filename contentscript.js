@@ -13,8 +13,6 @@ $(window).on("load", () => {
   $('#buttonBox-onyomichan').append(`<span id="eyeButton-onyomichan" v-on:click="eye"><img src="{{ eyeIcon }}"/></span>`)
   $('#buttonBox-onyomichan').append('<span id="slashButton-onyomichan" v-on:click="slash">Slash</span>')
 
-
-
   //Clickイベント
   const buttonEvent = new Vue({
     el: '#buttonBox-onyomichan',
@@ -28,6 +26,7 @@ $(window).on("load", () => {
     methods: {
       play: function(event) {
         this.isActive = !this.isActive
+        playEvent()
 
       },
       pause: function(event) {
@@ -48,15 +47,47 @@ $(window).on("load", () => {
   console.log(buttonEvent)
 })
 
-
+//再生イベント
 const playEvent = () => {
+  const repWords = {
+    before: [/2/g,/>>/g],
+    after: ["ああああああああああああ","ううううううううう"]
+  }
   //レスを取得
   let RES = []
   $('dd').each(function( index ) {
     RES.push($(this.outerHTML).children('ares').empty().parent().text());
   });
   console.log(RES)
+  console.log(replaceText(RES,repWords))
+
+  var ss = new SpeechSynthesisUtterance();
+
+  ss.text = replaceText(RES,repWords)
+  ss.rate = 1;
+  ss.pitch = 1;
+  ss.volume = 1;
+  ss.lang = 'ja'
+  speechSynthesis.speak( ss );
+  console.log(ss)
 }
+
+//文字置換
+const replaceText = (text,word) => {
+  const resArr = text.map((value) => {
+    i = 0;
+    do {
+      value = value.replace(word["before"][i],word["after"][i])
+      i++;
+    } while(i < word["before"].length)
+    return value
+  })
+  return resArr
+
+}
+
+
+
 //  //html読み込み
 //  $.get(chrome.extension.getURL('button.html'), function (data) {
 //   $($.parseHTML(data)).appendTo('body');
