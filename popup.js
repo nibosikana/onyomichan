@@ -1,6 +1,16 @@
 $(window).on("load", () => {
-  $('.menu .item')
-  .tab();
+
+const voiceSetting = new Vue({
+  el: '.onsei',
+  data: {
+    rateValue: 1,
+    pitchValue: 1,
+    volumeValue: 1,
+  },
+})
+  //tab
+  $('.menu .item').tab();
+
 })
 // window.onload = function () {
 //   chrome.storage.sync.get(function (result) {

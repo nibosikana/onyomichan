@@ -1,13 +1,50 @@
+@font-face {
+  font-family: 'Icons';
+  src: url("fonts/icons.woff2") format('woff');
+}
+
 html {
-  width: 500px;
+  width: 400px;
   height: 400px;
 }
 
 body {
-  width: 500px;
+  width: 400px;
   height: 400px;
 }
 
 .tabMenu {
-  margin-top: 100px;
+  margin-top: 60px;
 }
+
+h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #929191;
+  height: 5px;
+  width: 100%;
+  border-radius: 6px;
+}
+
+[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  position: relative;
+  border: 2px solid rgba(136, 135, 135, 0.7);
+  width: 22px;
+  height: 22px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+*:focus {
+  outline: none;
+}
+
