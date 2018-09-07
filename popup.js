@@ -1,3 +1,7 @@
+$(window).on("load", () => {
+  $('.menu .item')
+  .tab();
+})
 // window.onload = function () {
 //   chrome.storage.sync.get(function (result) {
 //     let voice = new Vue({

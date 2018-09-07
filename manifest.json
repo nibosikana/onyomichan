@@ -23,16 +23,18 @@
   ],
 
   "web_accessible_resources": [
-    "images/*.svg",
-    "button.html"
+    "images/*.svg"
   ],
 
   "icons":{
     "128": "images/onchan128.png"
   },
 
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://unpkg.com/semantic-ui-vue/dist/umd/ ; object-src 'self’",
+
   "permissions": [
     "tabs",
+    "tts",
     "storage"
   ]
 
