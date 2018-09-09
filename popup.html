@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="semantic.min.css">
   <link rel="stylesheet" href="popup.css">
+
   <script src="jquery-3.2.1.min.js"></script>
   <script src="vue.min.js"></script>
   <script src="semantic.min.js"></script>
@@ -36,8 +37,8 @@
           <input type="range" id="pitch-range" min="0" max="2" step="0.1" v-model="pitchValue"/>
           <p>ボリューム:{{ volumeValue }}</p>
           <input type="range" id="volume-range" min="0" max="1" step="0.1" v-model="volumeValue"/>
-          <button class="ui blue button" style="margin-top: 30px">保存</button>
-          <button class="ui green button" style="margin-top: 30px">テスト</button>
+          <button class="ui green button" style="margin-top: 30px" v-on:click="test">テスト</button>
+          <button class="ui blue button" style="margin-top: 30px" v-on:click="save">保存</button>
         </div>
       </div>
     </div>

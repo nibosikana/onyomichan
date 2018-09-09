@@ -121,12 +121,15 @@ const newResponse = () => {
 
 //読み上げる
 const speechSynthesis = (ssText) => {
-  let ss = new SpeechSynthesisUtterance();
-  ss.text = ssText;
-  ss.rate = 1;
-  ss.pitch = 1;
-  ss.volume = 0.2;
-  ss.lang = 'ja';
-  console.log(ss);
-  window.speechSynthesis.speak(ss);
+  chrome.storage.sync.get(null,(result) => {
+    let ss = new SpeechSynthesisUtterance();
+    ss.text = ssText;
+    ss.rate = result.rateValue;
+    ss.pitch = result.pitchValue;
+    ss.volume = result.volumeValue;
+    ss.lang = 'ja';
+    console.log(ss);
+    window.speechSynthesis.speak(ss);
+  })
+
 }
