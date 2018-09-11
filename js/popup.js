@@ -3,7 +3,6 @@ $(window).on("load", () => {
 $('.menu .item').tab();
 
 chrome.storage.sync.get(null,(result) => {
-  console.log(voiceSetting)
   console.log(result)
   voiceSetting.rateValue = result.rateValue;
   voiceSetting.pitchValue = result.pitchValue;
@@ -25,6 +24,8 @@ const speechSynthesis = (rate,pitch,volume) => {
   window.speechSynthesis.speak(ss);
 }
 
+
+
 const voiceSetting = new Vue({
   el: '.onsei',
   data: {
@@ -43,5 +44,7 @@ const voiceSetting = new Vue({
     }
   }
 })
+
 })
+
 

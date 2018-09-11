@@ -20,8 +20,9 @@
 }
 
 #buttonBox-onyomichan span img {
-  width: 28px;
-  margin: 8px;
+  width: 20px;
+  margin-left: 4px;
+  margin-right: 4px;
 }
 
 #buttonBox-onyomichan span img:hover {

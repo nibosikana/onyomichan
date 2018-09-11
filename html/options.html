@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>setting</title>
+  <link rel="stylesheet" href="/css/semantic.min.css">
+  <link rel="stylesheet" href="/css/options.css">
+  <script src="/js/jquery-3.2.1.min.js"></script>
+  <script src="/js/vue.min.js"></script>
+  <script src="/js/semantic.min.js"></script>
+  <script src="/js/options.js"></script>
+</head>
+<body>
+  <div class="header">
+    <div class="ui inverted huge borderless fixed fluid menu blue column">
+      <a class="header item" id='top'>おんヨミちゃん</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="tikan">
+      <div class="ui attached message">
+        <h3>置換</h3>
+      </div>
+      <div class="ui attached fluid segment">
+        <div class="ui form">
+          <div class="field">
+            <label>置換前:</label>
+            <input type="text" v-model="form.before" placeholder="あああ">
+          </div>
+        </div>
+        <div class="ui form">
+          <div class="field">
+            <label>置換後:</label>
+            <input type="text" v-model="form.after" placeholder="あああ">
+          </div>
+        </div>
+        <button class="ui orange button" v-on:click="add" :disabled="validation" style="margin-top: 20px">追加</button>
+        <button class="ui blue button" v-on:click="save" style="margin-top: 20px">保存</button>
+        </div>
+      <div class="ui attached fluid segment">
+        <table class="ui celled fixed unstackable table">
+          <thead>
+            <tr>
+              <th>置換前</th>
+              <th>置換後</th>
+              <th class="one wide"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in repData">
+              <td>{{ item.before }}</td>
+              <td>{{ item.after }}</td>
+              <td>
+                <button class="ui compact icon button" v-on:click="delete(item)">
+                  <i class="times icon"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="other">
+      <div class="ui attached message">
+          <h3>その他</h3>
+      </div>
+      <div class="ui attached fluid segment">
+        <div class="ui form">
+          <div class="inline field">
+            <input type="text" pattern="^[0-9]+" :value="strLimit" @input="strLimit=opt(strLimit,$event)">
+            <label>文字以上のレスの読み上げをスキップする</label>
+          </div>
+        </div>
+        <button class="ui blue button" v-on:click="save" style="margin-top: 20px">保存</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -6,20 +6,31 @@
 
   "browser_action": {
     "default_title": "おんヨミちゃんの設定をする",
-    "default_popup": "popup.html"
+    "default_popup": "html/popup.html"
   },
 
   "background": {
-    "scripts": ["background.js"],
+    "scripts": ["js/background.js"],
     "persistent": false
   },
 
+  "options_page": "html/options.html",
+
   "content_scripts": [
-      {
-    "matches": ["http://*.open2ch.net/test/read.cgi/*","http://*.open2ch.net//test/*"],
-    "js": ["vue.min.js","jquery-3.2.1.min.js","contentscript.js"],
-    "css":["style.css"]
-      }
+    {
+      "matches": [
+        "http://*.open2ch.net/test/read.cgi/*",
+        "http://*.open2ch.net//test/*"
+      ],
+      "js": [
+        "js/vue.min.js",
+        "js/jquery-3.2.1.min.js",
+        "js/contentscript.js"
+      ],
+      "css":[
+        "css/style.css"
+      ]
+    }
   ],
 
   "web_accessible_resources": [
@@ -31,7 +42,6 @@
   },
 
   "permissions": [
-    "tabs",
     "storage"
   ]
 

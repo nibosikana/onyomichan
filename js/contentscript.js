@@ -1,7 +1,7 @@
 //ウィンドウを閉じたとき
 $(window).on("beforeunload", () => {
-  window.speechSynthesis.cancel();
-  mo.disconnect();
+  resetEvent()
+
 });
 
 $(window).on("load", () => {
@@ -18,7 +18,7 @@ $(window).on("load", () => {
   $('#buttonBox-onyomichan').append(`<span id="eyeButton-onyomichan" v-show="eActive" v-bind:style="eStyle" v-on:click="eye"><img src="{{ eyeIcon }}"/></span>`)
   $('#buttonBox-onyomichan').append('<span id="redeyeButton-onyomichan" v-show="!eActive" v-bind:style="eStyle" v-on:click="redeye"><img src="{{ redeyeIcon }}"/></span>')
 
-  //Clickイベント
+
   const buttonEvent = new Vue({
     el: '#buttonBox-onyomichan',
     data: {
@@ -56,8 +56,7 @@ $(window).on("load", () => {
         this.eActive = true
         this.pStyle['pointer-events'] = 'auto'
         this.eStyle['pointer-events'] = 'auto'
-        window.speechSynthesis.cancel();
-        mo.disconnect();
+        resetEvent()
       },
       eye: function() {
         this.eActive = false
@@ -68,8 +67,8 @@ $(window).on("load", () => {
         this.eActive = true
         this.pStyle['pointer-events'] = 'auto'
         this.eStyle['pointer-events'] = 'auto'
-        window.speechSynthesis.cancel();
-        mo.disconnect();
+        resetEvent()
+
       }
     }
   })
@@ -78,35 +77,26 @@ $(window).on("load", () => {
 
 //再生イベント
 const playEvent = () => {
-  const repWords = {
-    before: [/2/g,/>>/g],
-    after: ["ああああああああああああ","ううううううううう"]
-  }
   let RES = []
   $('dd').each(function( index ) {
     RES.push($(this.outerHTML).children('ares').empty().parent().text());
   });
   console.log(RES)
-  const pText = replaceText(RES, repWords);
-  console.log(pText)
-  pText.forEach(function(val){
+  RES.forEach(function(val){
     speechSynthesis(val);
   })
   newResponse();
 }
 
-//置換
-const replaceText = (text,word) => {
-  const resArr = text.map((value) => {
-    i = 0;
-    do {
-      value = value.replace(word["before"][i],word["after"][i])
-      i++;
-    } while(i < word["before"].length)
-    return value
-  })
-  return resArr
-
+//終了イベント
+const resetEvent = () => {
+  window.speechSynthesis.cancel();
+  if(typeof mo !='undefined'){
+    console.log('あるよ')
+    mo.disconnect();
+  }else{
+    console.log('ないよ')
+  }
 }
 
 //新しいレスを監視
@@ -122,14 +112,20 @@ const newResponse = () => {
 //読み上げる
 const speechSynthesis = (ssText) => {
   chrome.storage.sync.get(null,(result) => {
-    let ss = new SpeechSynthesisUtterance();
-    ss.text = ssText;
-    ss.rate = result.rateValue;
-    ss.pitch = result.pitchValue;
-    ss.volume = result.volumeValue;
-    ss.lang = 'ja';
-    console.log(ss);
-    window.speechSynthesis.speak(ss);
+    if(ssText.length-2 <= result.strLimit){
+      result.repData.map((value) => {
+          const reg = new RegExp(value.before, 'g');
+          return ssText = ssText.replace(reg,value.after)
+      })
+      let ss = new SpeechSynthesisUtterance();
+      ss.text = ssText;
+      ss.rate = result.rateValue;
+      ss.pitch = result.pitchValue;
+      ss.volume = result.volumeValue;
+      ss.lang = 'ja';
+      console.log(ss);
+      window.speechSynthesis.speak(ss);
+    }
   })
 
 }
