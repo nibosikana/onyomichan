@@ -3,7 +3,7 @@ $(window).on("load", () => {
   chrome.storage.sync.get(null,(result) => {
     console.log(result)
     replacementSetting.repData = result.repData;
-    // otherSetting.strLimit = result.strLimit;
+    otherSetting.strLimit = result.strLimit;
   })
   
   const setStorage = (key,val) => {
@@ -17,7 +17,8 @@ $(window).on("load", () => {
         before: null,
         after: null
       },
-      repData: []
+      repData: [],
+      saveMessage: false
   },
   computed: {
     validation: function() {
@@ -43,6 +44,10 @@ $(window).on("load", () => {
     save: function() {
       console.log("save")
       setStorage('repData',this.repData)
+      this.saveMessage = true
+      setTimeout(() => {
+        this.saveMessage = false
+      }, 2000)
     },
   
     delete: function(item) {
@@ -59,18 +64,22 @@ const otherSetting = new Vue({
   el: '.other',
   data: {
     strLimit: 5000,
+    saveMessage: false
   },
   computed: {
-
+    validation: function(){ 
+      console.log(this.strLimit)
+      const pattern = /^\d+$/;    
+      return pattern.test(this.strLimit.trim())
+    }
   },
   methods: {
-    // opt:function(e){
-    //   var re = new RegExp(e.target.pattern);
-    //   var result = re.exec(e.target.value);
-    //   return e.target.value = (result)?result[0]:oldVal;
-    // },
     save: function(){
       setStorage('strLimit',this.strLimit)
+      this.saveMessage = true
+      setTimeout(() => {
+        this.saveMessage = false
+      }, 2000)
     }
   }
 })

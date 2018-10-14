@@ -15,7 +15,7 @@ const setStorage = (key,val) => {
 
 const speechSynthesis = (rate,pitch,volume) => {
   let ss = new SpeechSynthesisUtterance();
-  ss.text = 'うんちでるにゃw';
+  ss.text = 'おーぷんにちゃんねるへようこそ。';
   ss.rate = rate;
   ss.pitch = pitch;
   ss.volume = volume;
@@ -32,6 +32,7 @@ const voiceSetting = new Vue({
     rateValue: 1,
     pitchValue: 1,
     volumeValue: 1,
+    saveMessage: false
   },
   methods: {
     test: function() {
@@ -41,6 +42,10 @@ const voiceSetting = new Vue({
       setStorage('rateValue',this.rateValue)
       setStorage('pitchValue',this.pitchValue)
       setStorage('volumeValue',this.volumeValue)
+      this.saveMessage = true
+      setTimeout(() => {
+        this.saveMessage = false
+      }, 2000)
     }
   }
 })

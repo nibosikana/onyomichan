@@ -13,7 +13,7 @@
 <body>
   <div class="header">
     <div class="ui inverted huge borderless fixed fluid menu blue column">
-      <a class="header item" id='top'>おんヨミちゃん</a>
+      <a class="header item" id='top'>おんヨミちゃん 設定</a>
     </div>
   </div>
   <div class="main">
@@ -25,17 +25,18 @@
         <div class="ui form">
           <div class="field">
             <label>置換前:</label>
-            <input type="text" v-model="form.before" placeholder="あああ">
+            <input type="text" v-model="form.before" placeholder="例)おーぷん２ちゃんねる">
           </div>
         </div>
         <div class="ui form">
           <div class="field">
             <label>置換後:</label>
-            <input type="text" v-model="form.after" placeholder="あああ">
+            <input type="text" v-model="form.after" placeholder="例)おんJ">
           </div>
         </div>
         <button class="ui orange button" v-on:click="add" :disabled="validation" style="margin-top: 20px">追加</button>
         <button class="ui blue button" v-on:click="save" style="margin-top: 20px">保存</button>
+        <span class="ui teal header" v-show="saveMessage">保存しました</span>
         </div>
       <div class="ui attached fluid segment">
         <table class="ui celled fixed unstackable table">
@@ -67,11 +68,12 @@
       <div class="ui attached fluid segment">
         <div class="ui form">
           <div class="inline field">
-            <input type="text" pattern="^[0-9]+" :value="strLimit" @input="strLimit=opt(strLimit,$event)">
+            <input type="text" v-model="strLimit">
             <label>文字以上のレスの読み上げをスキップする</label>
           </div>
         </div>
-        <button class="ui blue button" v-on:click="save" style="margin-top: 20px">保存</button>
+        <button class="ui blue button" v-on:click="save" :disabled="!validation" style="margin-top: 20px">保存</button>
+        <span class="ui teal header" v-show="saveMessage">保存しました</span>
       </div>
     </div>
   </div>
