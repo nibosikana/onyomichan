@@ -63,7 +63,7 @@ $(window).on("load", () => {
 const otherSetting = new Vue({
   el: '.other',
   data: {
-    strLimit: 5000,
+    strLimit: null,
     saveMessage: false
   },
   computed: {
@@ -75,7 +75,7 @@ const otherSetting = new Vue({
   },
   methods: {
     save: function(){
-      setStorage('strLimit',this.strLimit)
+      setStorage('strLimit',Number(this.strLimit))
       this.saveMessage = true
       setTimeout(() => {
         this.saveMessage = false
