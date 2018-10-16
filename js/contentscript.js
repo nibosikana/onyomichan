@@ -78,7 +78,7 @@ $(window).on("load", () => {
 //再生イベント
 const playEvent = () => {
   let RES = []
-  $('dd').each(function( index ) {
+  $('dl').children('dd').each(function( index ) {
     RES.push($(this.outerHTML).children('ares').empty().parent().text());
   });
   console.log(RES)
@@ -112,16 +112,24 @@ const newResponse = () => {
 //読み上げる
 const speechSynthesis = (ssText) => {
   chrome.storage.sync.get(null,(result) => {
-    if(ssText.length-2 <= result.strLimit){
-      result.repData.map((value) => {
-          const reg = new RegExp(value.before, 'g');
-          return ssText = ssText.replace(reg,value.after)
+    if(ssText.length-2 <= result.other_data.max_length){
+      const new_simple_replace_data = result.simple_replace_data.map((value) => {
+        value.before = value.before.replace(/([.*+?^=!:${}()|[\]\/\\])/g, "\\$1")
+        return value
+      })
+      console.log(new_simple_replace_data)
+      const repData = result.regexp_replace_data.concat(new_simple_replace_data)
+      console.log(repData)
+      repData.map((value) => {
+        const reg = new RegExp(value.before, 'g');
+        ssText = ssText.replace(reg,value.after)
+        return ssText
       })
       let ss = new SpeechSynthesisUtterance();
       ss.text = ssText;
-      ss.rate = result.rateValue;
-      ss.pitch = result.pitchValue;
-      ss.volume = result.volumeValue;
+      ss.rate = result.voice_data.rateValue;
+      ss.pitch = result.voice_data.pitchValue;
+      ss.volume = result.voice_data.volumeValue;
       ss.lang = 'ja';
       console.log(ss);
       window.speechSynthesis.speak(ss);

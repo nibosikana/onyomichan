@@ -17,21 +17,21 @@
     </div>
   </div>
   <div class="main">
-    <div class="tikan">
+    <div class="simple_tikan">
       <div class="ui attached message">
-        <h3>置換</h3>
+        <h3>単純置換</h3>
       </div>
       <div class="ui attached fluid segment">
         <div class="ui form">
           <div class="field">
             <label>置換前:</label>
-            <input type="text" v-model="form.before" placeholder="例)おーぷん２ちゃんねる">
+            <input type="text" v-model="inputData.before" placeholder="例)おーぷん２ちゃんねる">
           </div>
         </div>
         <div class="ui form">
           <div class="field">
             <label>置換後:</label>
-            <input type="text" v-model="form.after" placeholder="例)おんJ">
+            <input type="text" v-model="inputData.after" placeholder="例)おんJ">
           </div>
         </div>
         <button class="ui orange button" v-on:click="add" :disabled="validation" style="margin-top: 20px">追加</button>
@@ -48,7 +48,51 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in repData">
+            <tr v-for="item in replaceData">
+              <td>{{ item.before }}</td>
+              <td>{{ item.after }}</td>
+              <td>
+                <button class="ui compact icon button" v-on:click="delete(item)">
+                  <i class="times icon"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="regexp_tikan">
+      <div class="ui attached message">
+        <h3>正規表現置換</h3>
+      </div>
+      <div class="ui attached fluid segment">
+        <div class="ui form">
+          <div class="field">
+            <label>置換前:</label>
+            <input type="text" v-model="inputData.before" placeholder="例)おーぷん２ちゃんねる">
+          </div>
+        </div>
+        <div class="ui form">
+          <div class="field">
+            <label>置換後:</label>
+            <input type="text" v-model="inputData.after" placeholder="例)おんJ">
+          </div>
+        </div>
+        <button class="ui orange button" v-on:click="add" :disabled="validation" style="margin-top: 20px">追加</button>
+        <button class="ui blue button" v-on:click="save" style="margin-top: 20px">保存</button>
+        <span class="ui teal header" v-show="saveMessage">保存しました</span>
+        </div>
+      <div class="ui attached fluid segment">
+        <table class="ui celled fixed unstackable table">
+          <thead>
+            <tr>
+              <th>置換前</th>
+              <th>置換後</th>
+              <th class="one wide"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in replaceData">
               <td>{{ item.before }}</td>
               <td>{{ item.after }}</td>
               <td>
@@ -68,7 +112,7 @@
       <div class="ui attached fluid segment">
         <div class="ui form">
           <div class="inline field">
-            <input type="text" v-model="strLimit">
+            <input type="text" v-model="otherData.max_length">
             <label>文字以上のレスの読み上げをスキップする</label>
           </div>
         </div>

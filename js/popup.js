@@ -4,9 +4,7 @@ $('.menu .item').tab();
 
 chrome.storage.sync.get(null,(result) => {
   console.log(result)
-  voiceSetting.rateValue = result.rateValue;
-  voiceSetting.pitchValue = result.pitchValue;
-  voiceSetting.volumeValue = result.volumeValue;
+  voiceSetting.voiceData = result.voice_data;
 })
 
 const setStorage = (key,val) => {
@@ -29,19 +27,19 @@ const speechSynthesis = (rate,pitch,volume) => {
 const voiceSetting = new Vue({
   el: '.onsei',
   data: {
-    rateValue: 1,
-    pitchValue: 1,
-    volumeValue: 1,
+    voiceData: {
+      rateValue: 1,
+      pitchValue: 1,
+      volumeValue: 1,
+    },
     saveMessage: false
   },
   methods: {
     test: function() {
-      speechSynthesis(this.rateValue,this.pitchValue,this.volumeValue)
+      speechSynthesis(this.voiceData.rateValue,this.voiceData.pitchValue,this.voiceData.volumeValue)
     },
     save: function() {
-      setStorage('rateValue',this.rateValue)
-      setStorage('pitchValue',this.pitchValue)
-      setStorage('volumeValue',this.volumeValue)
+      setStorage('voice_data',this.voiceData)
       this.saveMessage = true
       setTimeout(() => {
         this.saveMessage = false
