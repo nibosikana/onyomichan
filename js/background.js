@@ -18,7 +18,7 @@ chrome.runtime.onInstalled.addListener(function() {
       })
       initialValue('simple_replace_data',
       [
-        {before:'>>',after:'安価'},
+        {before:'>>',after:'アンカ'},
         {before:'!aku',after:'アク禁'},
         {before:"!kaijo",after:'解除'},
         {before:"J( 'ｰ`)し",after:'マッマ'},
@@ -27,14 +27,14 @@ chrome.runtime.onInstalled.addListener(function() {
       initialValue('regexp_replace_data',
       [
         {before:"https?://[a-zA-Z0-9\-_\.:@!~*'\(¥);/?&=\+$,%#]+",after:'URL省略。'},
-        {before:'([^A-Z])w$',after:'$1、ワラ'},
-        {before:'([^A-Z\s])w([！|。|\s])',after:'$1、ワラ$2'},
-        {before:'www*',after:'ワラワラ'},
+        {before:'(www*|ｗｗｗ*)',after:'ワラワラ'},
+        {before:'([^a-zA-Z])(w|ｗ)',after:'$1ワラ'},
         {before:"彡\\(.\\)\\(.\\)",after:'やきう'},
       ])
       initialValue('other_data',
       {
-        max_length:10000
+        max_length: 10000,
+        open2ch_url: 'open2ch.net/'
       })
     }
   })

@@ -72,7 +72,6 @@ $(window).on("load", () => {
       }
     }
   })
-  console.log(buttonEvent)
 })
 
 //再生イベント
@@ -81,7 +80,6 @@ const playEvent = () => {
   $('dl').children('dd').each(function( index ) {
     RES.push($(this.outerHTML).children('ares').empty().parent().text());
   });
-  console.log(RES)
   RES.forEach(function(val){
     speechSynthesis(val);
   })
@@ -92,10 +90,8 @@ const playEvent = () => {
 const resetEvent = () => {
   window.speechSynthesis.cancel();
   if(typeof mo !='undefined'){
-    console.log('あるよ')
     mo.disconnect();
   }else{
-    console.log('ないよ')
   }
 }
 
@@ -117,21 +113,19 @@ const speechSynthesis = (ssText) => {
         value.before = value.before.replace(/([.*+?^=!:${}()|[\]\/\\])/g, "\\$1")
         return value
       })
-      console.log(new_simple_replace_data)
       const repData = result.regexp_replace_data.concat(new_simple_replace_data)
-      console.log(repData)
       repData.map((value) => {
         const reg = new RegExp(value.before, 'g');
         ssText = ssText.replace(reg,value.after)
         return ssText
       })
       let ss = new SpeechSynthesisUtterance();
+      console.log(ssText)
       ss.text = ssText;
       ss.rate = result.voice_data.rateValue;
       ss.pitch = result.voice_data.pitchValue;
       ss.volume = result.voice_data.volumeValue;
       ss.lang = 'ja';
-      console.log(ss);
       window.speechSynthesis.speak(ss);
     }
   })

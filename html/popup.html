@@ -12,8 +12,11 @@
 </head>
 <body>
   <div class="header">
-    <div class="ui inverted huge borderless fixed fluid menu blue column">
-      <a class="header item" id='top' href="chrome-extension://dnjimdbnminagjmoeddicphiohpgdoko/html/options.html" target="_blank">設定を開く</a>
+    <div class="ui inverted menu teal">
+      <div class="right item">
+        <a class="ui inverted button" v-bind:href="open2ch_url" target="_blank">open2ch</a>   
+        <a class="ui inverted button" id='top' href="chrome-extension://dnjimdbnminagjmoeddicphiohpgdoko/html/options.html" target="_blank" style="margin-left:5px">設定</a>
+      </div>
     </div>
   </div>
 
