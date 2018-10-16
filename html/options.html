@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>setting</title>
+  <link rel="stylesheet" href="/css/semantic.min.css">
+  <link rel="stylesheet" href="/css/options.css">
+  <script src="/js/jquery-3.2.1.min.js"></script>
+  <script src="/js/vue.min.js"></script>
+  <script src="/js/semantic.min.js"></script>
+  <script src="/js/options.js"></script>
+</head>
+<body>
+  <div class="header">
+    <div class="ui inverted huge borderless fixed fluid menu blue column">
+      <a class="header item" id='top'>おんヨミちゃん 設定</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="simple_tikan">
+      <div class="ui attached message">
+        <h3>単純置換</h3>
+      </div>
+      <div class="ui attached fluid segment">
+        <div class="ui form">
+          <div class="field">
+            <label>置換前:</label>
+            <input type="text" v-model="inputData.before" placeholder="例)おーぷん２ちゃんねる">
+          </div>
+        </div>
+        <div class="ui form">
+          <div class="field">
+            <label>置換後:</label>
+            <input type="text" v-model="inputData.after" placeholder="例)おんJ">
+          </div>
+        </div>
+        <button class="ui orange button" v-on:click="add" :disabled="validation" style="margin-top: 20px">追加</button>
+        <button class="ui blue button" v-on:click="save" style="margin-top: 20px">保存</button>
+        <span class="ui teal header" v-show="saveMessage">保存しました</span>
+        </div>
+      <div class="ui attached fluid segment">
+        <table class="ui celled fixed unstackable table">
+          <thead>
+            <tr>
+              <th>置換前</th>
+              <th>置換後</th>
+              <th class="one wide"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in replaceData">
+              <td>{{ item.before }}</td>
+              <td>{{ item.after }}</td>
+              <td>
+                <button class="ui compact icon button" v-on:click="delete(item)">
+                  <i class="times icon"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="regexp_tikan">
+      <div class="ui attached message">
+        <h3>正規表現置換</h3>
+      </div>
+      <div class="ui attached fluid segment">
+        <div class="ui form">
+          <div class="field">
+            <label>置換前:</label>
+            <input type="text" v-model="inputData.before" placeholder="例)おーぷん２ちゃんねる">
+          </div>
+        </div>
+        <div class="ui form">
+          <div class="field">
+            <label>置換後:</label>
+            <input type="text" v-model="inputData.after" placeholder="例)おんJ">
+          </div>
+        </div>
+        <button class="ui orange button" v-on:click="add" :disabled="validation" style="margin-top: 20px">追加</button>
+        <button class="ui blue button" v-on:click="save" style="margin-top: 20px">保存</button>
+        <span class="ui teal header" v-show="saveMessage">保存しました</span>
+        </div>
+      <div class="ui attached fluid segment">
+        <table class="ui celled fixed unstackable table">
+          <thead>
+            <tr>
+              <th>置換前</th>
+              <th>置換後</th>
+              <th class="one wide"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in replaceData">
+              <td>{{ item.before }}</td>
+              <td>{{ item.after }}</td>
+              <td>
+                <button class="ui compact icon button" v-on:click="delete(item)">
+                  <i class="times icon"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="other">
+      <div class="ui attached message">
+          <h3>その他</h3>
+      </div>
+      <div class="ui attached fluid segment">
+        <div class="ui form">
+          <div class="inline field">
+            <input type="text" v-model="otherData.max_length">
+            <label>文字以上のレスの読み上げをスキップする</label>
+          </div>
+        </div>
+        <button class="ui blue button" v-on:click="save" :disabled="!validation" style="margin-top: 20px">保存</button>
+        <span class="ui teal header" v-show="saveMessage">保存しました</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

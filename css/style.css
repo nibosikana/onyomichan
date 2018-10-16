@@ -1,0 +1,35 @@
+@-webkit-keyframes zoom {
+  50% {
+    -webkit-transform: scale(1.05);
+  }
+}
+@keyframes zoom {
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+#buttonBox-onyomichan {
+  top: 5px;
+  left: 100px;
+  position: fixed;
+}
+
+#buttonBox-onyomichan span {
+  cursor: pointer;
+}
+
+#buttonBox-onyomichan span img {
+  width: 20px;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+#buttonBox-onyomichan span img:hover {
+  -webkit-animation: zoom .3s;
+  animation: zoom .3s;
+}
+
+*:focus {
+  outline: none;
+}
