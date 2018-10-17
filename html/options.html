@@ -12,9 +12,10 @@
 </head>
 <body>
   <div class="header">
-    <div class="ui inverted huge borderless fixed fluid menu teal column">
+    <h3 class="ui inverted top fixed teal menu">
       <a class="header item" id='top'>おんヨミちゃん 設定</a>
-    </div>
+    </h3>
+  <div id="message" class="ui hidden fixed menu success message" style="margin-top:43px">保存しました</div>
   </div>
   <div class="main">
     <div class="simple_tikan">
@@ -36,6 +37,7 @@
         </div>
         <button class="ui orange button" v-on:click="add" :disabled="validation" style="margin-top: 20px">追加</button>
         <button class="ui blue button" v-on:click="save" style="margin-top: 20px">保存</button>
+        <button class="ui grey button" v-on:click="initialize">初期化</button>
         <span class="ui teal header" v-show="saveMessage">保存しました</span>
         </div>
       <div class="ui attached fluid segment">
@@ -80,6 +82,7 @@
         </div>
         <button class="ui orange button" v-on:click="add" :disabled="validation" style="margin-top: 20px">追加</button>
         <button class="ui blue button" v-on:click="save" style="margin-top: 20px">保存</button>
+        <button class="ui grey button" v-on:click="initialize">初期化</button>        
         <span class="ui teal header" v-show="saveMessage">保存しました</span>
         </div>
       <div class="ui attached fluid segment">

@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "おんヨミちゃん",
   "description": "おーぷん２ちゃんねるのスレッドを読み上げる拡張機能です",
-  "version": "0.1.5",
+  "version": "0.1.9",
 
   "browser_action": {
     "default_title": "おんヨミちゃんの設定をする",

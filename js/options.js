@@ -6,9 +6,20 @@ $(window).on("load", () => {
     otherSetting.otherData = result.other_data;
   })
   
+  const saveMessage = () => {
+    let message = $('#message')
+    message.removeClass('hidden')
+    setTimeout(() => {
+    message.addClass('hidden')
+    },1800)
+  }
+
   const setStorage = (key,val) => {
     chrome.storage.sync.set({[key]:val})
+    saveMessage()
   }
+
+
 
   const SimpleReplacementSetting = new Vue({
     el: '.simple_tikan',
@@ -40,12 +51,17 @@ $(window).on("load", () => {
     },
     save: function() {
       setStorage('simple_replace_data',this.replaceData)
-      this.saveMessage = true
-      setTimeout(() => {
-        this.saveMessage = false
-      }, 2000)
     },
-  
+    initialize: function() {
+      this.replaceData = []
+      this.replaceData.push(
+        {before:'>>',after:'アンカ'},
+        {before:'!aku',after:'アク禁'},
+        {before:"!kaijo",after:'解除'},
+        {before:"J( 'ｰ`)し",after:'マッマ'},
+        {before:"(*^◯^*)",after:'ポジハメ'},
+      )
+    },
     delete: function(item) {
       const index = this.replaceData.indexOf(item)
       this.replaceData.splice(index, 1)
@@ -84,12 +100,17 @@ const RegExpReplacementSetting = new Vue({
     },
     save: function() {
       setStorage('regexp_replace_data',this.replaceData)
-      this.saveMessage = true
-      setTimeout(() => {
-        this.saveMessage = false
-      }, 2000)
     },
-  
+    initialize: function() {
+      this.replaceData = []
+      this.replaceData.push(
+        {before:"https?://[a-zA-Z0-9\-_\.:@!~*'\(¥);/?&=\+$,%#]+",after:'URL省略。'},
+        {before:'(www*|ｗｗｗ*)',after:'ワラワラ'},
+        {before:'([^a-zA-Z])(w|ｗ)',after:'$1ワラ'},
+        {before:"彡\\(.\\)\\(.\\)",after:'やきう'},
+        {before:"\\(o(‘|')ω(‘|')n\\)",after:'おんちゃん'},
+      )
+    },
     delete: function(item) {
       const index = this.replaceData.indexOf(item)
       this.replaceData.splice(index, 1)
@@ -106,12 +127,6 @@ const otherSetting = new Vue({
     },
     saveMessage: false
   },
-  // computed: {
-  //   validation: function(){ 
-  //     const pattern = /^\d+$/;    
-  //     return pattern.test(this.otherData.max_length.trim())
-  //   }
-  // },
   methods: {
     save: function(){
       setStorage('other_data',
@@ -119,10 +134,6 @@ const otherSetting = new Vue({
         max_length: this.otherData.max_length,
         open2ch_url: this.otherData.open2ch_url
       })
-      this.saveMessage = true
-      setTimeout(() => {
-        this.saveMessage = false
-      }, 2000)
     }
   }
 })

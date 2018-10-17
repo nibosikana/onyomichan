@@ -8,8 +8,17 @@ chrome.storage.sync.get(null,(result) => {
   voiceSetting.open2ch_url = 'http://' + result.other_data.open2ch_url;
 })
 
+const saveMessage = () => {
+  let message = $('#message')
+  message.removeClass('hidden')
+  setTimeout(() => {
+  message.addClass('hidden')
+  },1800)
+}
+
 const setStorage = (key,val) => {
   chrome.storage.sync.set({[key]:val})
+  saveMessage()
 }
 
 const speechSynthesis = (rate,pitch,volume) => {
@@ -40,10 +49,6 @@ const voiceSetting = new Vue({
     },
     save: function() {
       setStorage('voice_data',this.voiceData)
-      this.saveMessage = true
-      setTimeout(() => {
-        this.saveMessage = false
-      }, 2000)
     }
   }
 })
