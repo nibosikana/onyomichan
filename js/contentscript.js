@@ -9,15 +9,39 @@ $(window).on("load", () => {
   const buttonIcon = (path) => {
     return chrome.extension.getURL(path);
   }
-
   //ボタンを追加
   $('body').append('<div id="buttonBox-onyomichan"></div>');
   $('#buttonBox-onyomichan').append(`<span id="playButton-onyomichan" v-show="pActive" v-bind:style="pStyle" v-on:click="play"><img src="{{ playIcon }}"/></span>`)
-  $('#buttonBox-onyomichan').append(`<span id="pauseButton-onyomichan"v-show="!pActive" v-on:click="pause"><img src="{{ pauseIcon }}"/></span>`)
+  $('#buttonBox-onyomichan').append(`<span id="pauseButton-onyomichan" v-show="!pActive" v-on:click="pause"><img src="{{ pauseIcon }}"/></span>`)
   $('#buttonBox-onyomichan').append(`<span id="stopButton-onyomichan" v-on:click="stop"><img src="{{ stopIcon }}"/></span>`)
   $('#buttonBox-onyomichan').append(`<span id="eyeButton-onyomichan" v-show="eActive" v-bind:style="eStyle" v-on:click="eye"><img src="{{ eyeIcon }}"/></span>`)
   $('#buttonBox-onyomichan').append('<span id="redeyeButton-onyomichan" v-show="!eActive" v-bind:style="eStyle" v-on:click="redeye"><img src="{{ redeyeIcon }}"/></span>')
 
+  chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
+    console.log(message)
+    switch(message.type) {
+      case 'play':
+        buttonEvent.play();
+        break;
+      case 'pause':
+        buttonEvent.pause();
+        break;
+      case 'stop':
+        buttonEvent.stop();
+        break;
+      case 'eye':
+        buttonEvent.eye();
+        break;
+      case 'redeye':
+        buttonEvent.redeye();
+        break;
+      default:
+        console.log(buttonEvent)
+        sendStatus(buttonEvent);
+        break;
+    }
+    return true
+  })
 
   const buttonEvent = new Vue({
     el: '#buttonBox-onyomichan',
@@ -38,44 +62,56 @@ $(window).on("load", () => {
     },
     methods: {
       play: function() {
-        this.pActive = false
-        this.eActive = false
-        this.eStyle['pointer-events'] = 'none'
+        // this.pActive = false
+        // this.eActive = false
+        // this.eStyle['pointer-events'] = 'none'
+
         if(window.speechSynthesis.speaking){
-          window.speechSynthesis.resume();
+          console.log('再開')
+          resumeEvent(this)
+          sendStatus(this)
+
         }else{
-          playEvent()
+          console.log('再生')
+          playEvent(this)
+          sendStatus(this)
         }
       },
       pause: function() {
-        this.pActive = true
-        window.speechSynthesis.pause();
+        pauseEvent(this)
+        sendStatus(this)
       },
       stop: function() {
-        this.pActive = true
-        this.eActive = true
-        this.pStyle['pointer-events'] = 'auto'
-        this.eStyle['pointer-events'] = 'auto'
-        resetEvent()
+        resetEvent(this)
+        sendStatus(this)
       },
       eye: function() {
-        this.eActive = false
-        this.pStyle['pointer-events'] = 'none'
-        newResponse()
+        newResponse(this)
+        sendStatus(this)
       },
-      redeye: function() {
-        this.eActive = true
-        this.pStyle['pointer-events'] = 'auto'
-        this.eStyle['pointer-events'] = 'auto'
-        resetEvent()
-
-      }
+      // redeye: function() {
+      //   this.eActive = true
+      //   this.pStyle['pointer-events'] = 'auto'
+      //   this.eStyle['pointer-events'] = 'auto'
+      //   resetEvent()
+      // }
     }
   })
 })
 
+//データを送る
+const sendStatus = (data) => {
+  chrome.runtime.sendMessage(
+  { type: "buttonStatus", pActive: data.pActive, eActive: data.eActive, eStyle: data.eStyle},function(response){
+    console.log(response)
+  })
+}
+  
 //再生イベント
-const playEvent = () => {
+const playEvent = (data) => {
+  data.pActive = false
+  // data.eActive = false
+  // data.eStyle['pointer-events'] = 'none'
   let RES = []
   $('dl').children('dd').each(function( index ) {
     RES.push($(this.outerHTML).children('ares').empty().parent().text());
@@ -83,11 +119,28 @@ const playEvent = () => {
   RES.forEach(function(val){
     speechSynthesis(val);
   })
-  newResponse();
+  newResponse(data);
+}
+
+//一時停止イベント
+const pauseEvent = (data) => {
+  data.pActive = true
+  window.speechSynthesis.pause();
+}
+
+//再開イベント
+const resumeEvent = (data) => {
+  data.pActive = false
+  data.eActive = false
+  window.speechSynthesis.resume();
 }
 
 //終了イベント
-const resetEvent = () => {
+const resetEvent = (data) => {
+  data.pActive = true
+  data.eActive = true
+  // data.pStyle['pointer-events'] = 'auto'
+  // data.eStyle['pointer-events'] = 'auto'
   window.speechSynthesis.cancel();
   if(typeof mo !='undefined'){
     mo.disconnect();
@@ -96,7 +149,9 @@ const resetEvent = () => {
 }
 
 //新しいレスを監視
-const newResponse = () => {
+const newResponse = (data) => {
+  data.eActive = false
+  // data.pStyle['pointer-events'] = 'none'
   const target = document.getElementsByClassName('thread')[0];
   mo = new MutationObserver((data) => {
     let nText = $(data[0].addedNodes[0].innerHTML).children('ares').empty().parent().text()

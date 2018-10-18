@@ -19,8 +19,6 @@ $(window).on("load", () => {
     saveMessage()
   }
 
-
-
   const SimpleReplacementSetting = new Vue({
     el: '.simple_tikan',
     data: {

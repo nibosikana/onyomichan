@@ -1,3 +1,11 @@
+chrome.runtime.onMessage.addListener(function(message){
+  console.log(message)
+  setTimeout(function(){
+		sendResponse({a:1,b:2})
+	}, 5000)
+	return true
+})
+
 //ストレージに初期値を追加
 const initialValue = (key,val) => {
   chrome.storage.sync.set({[key]:val})

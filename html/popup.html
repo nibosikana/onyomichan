@@ -22,7 +22,18 @@
   <div id="message" class="ui hidden fixed menu success message" style="margin-top:43px">保存しました</div>
   <div class="onsei">
     <div class="ui attached message">
-      <h4>音声設定</h4>
+      <i class="play icon" v-show="pActive" v-bind:style="pStyle" v-on:click="play"></i>
+      <i class="pause icon" v-show="!pActive" v-on:click="pause"></i>
+      <i class="stop icon" v-on:click="stop"></i>
+      <i class="eye icon" v-show="eActive" v-on:click="eye"></i>
+      <i class="eye red icon" v-show="!eActive" v-bind:style="eStyle" v-on:click="redeye"></i>
+
+      <select v-model="selected">
+        <option v-for="option in options" v-bind:value="option.value">
+          {{ option.text }}
+        </option>
+      </select>
+
     </div>
     <div class="ui attached fluid segment">
       <p>レート:{{ voiceData.rateValue }}</p>
