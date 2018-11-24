@@ -15,6 +15,14 @@
   position: fixed;
 }
 
+#resnumInput-onyomichan {
+  width: 45px;
+  height: 25px;
+  top: -7px;
+  position: relative;
+
+}
+
 #buttonBox-onyomichan span {
   cursor: pointer;
 }

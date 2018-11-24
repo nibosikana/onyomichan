@@ -2,8 +2,8 @@
   "manifest_version": 2,
   "name": "おんヨミちゃん",
   "description": "おーぷん２ちゃんねるのスレッドを読み上げる拡張機能です",
-  "version": "0.1.9",
-
+  "version": "0.2.0",
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
   "browser_action": {
     "default_title": "おんヨミちゃんの設定をする",
     "default_popup": "html/popup.html"
@@ -19,7 +19,7 @@
   "content_scripts": [
     {
       "matches": [
-        "http://*.open2ch.net/test/read.cgi/*"
+        "https://*.open2ch.net/test/read.cgi/*"
       ],
       "js": [
         "js/vue.min.js",

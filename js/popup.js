@@ -5,7 +5,7 @@ $('.menu .item').tab();
 chrome.storage.sync.get(null,(result) => {
   console.log(result)
   voiceSetting.voiceData = result.voice_data;
-  voiceSetting.open2ch_url = 'http://' + result.other_data.open2ch_url;
+  voiceSetting.open2ch_url = 'https://' + result.other_data.open2ch_url;
 })
 
 const saveMessage = () => {
@@ -23,7 +23,7 @@ const setStorage = (key,val) => {
 
 const speechSynthesis = (rate,pitch,volume) => {
   let ss = new SpeechSynthesisUtterance();
-  ss.text = 'おーーーぷん2ちゃんねるわ、2012年に開設された日本の電子掲示板である。管理者は矢野さとる';
+  ss.text = 'おーーーぷん2ちゃんねるわ、2012年に開設された日本の電子掲示板である。';
   ss.rate = rate;
   ss.pitch = pitch;
   ss.volume = volume;

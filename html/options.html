@@ -5,6 +5,7 @@
   <title>setting</title>
   <link rel="stylesheet" href="/css/semantic.min.css">
   <link rel="stylesheet" href="/css/options.css">
+  <script type="text/javascript" src="/js/googleAnalytics.js"></script>
   <script src="/js/jquery-3.2.1.min.js"></script>
   <script src="/js/vue.min.js"></script>
   <script src="/js/semantic.min.js"></script>
@@ -38,7 +39,6 @@
         <button class="ui orange button" v-on:click="add" :disabled="validation" style="margin-top: 20px">追加</button>
         <button class="ui blue button" v-on:click="save" style="margin-top: 20px">保存</button>
         <button class="ui grey button" v-on:click="initialize">初期化</button>
-        <span class="ui teal header" v-show="saveMessage">保存しました</span>
         </div>
       <div class="ui attached fluid segment">
         <table class="ui celled fixed unstackable table">
@@ -83,7 +83,6 @@
         <button class="ui orange button" v-on:click="add" :disabled="validation" style="margin-top: 20px">追加</button>
         <button class="ui blue button" v-on:click="save" style="margin-top: 20px">保存</button>
         <button class="ui grey button" v-on:click="initialize">初期化</button>        
-        <span class="ui teal header" v-show="saveMessage">保存しました</span>
         </div>
       <div class="ui attached fluid segment">
         <table class="ui celled fixed unstackable table">
@@ -124,16 +123,15 @@
           <div class="inline field">
             <label>ポップアップウィンドウ右上の「open2ch」のリンク先を変更する：</label>
             <div class="ui labeled input">
-              <div class="ui label">http://</div>
+              <div class="ui label">https://</div>
               <input type="text" placeholder="＊.open2ch.net/＊" v-model="otherData.open2ch_url">
             </div>
           </div>
         </div>
         <button class="ui blue button" v-on:click="save" style="margin-top: 20px">保存</button>
-        <span class="ui teal header" v-show="saveMessage">保存しました</span>
       </div>
     </div>
-    <div class="question">
+    <!-- <div class="question">
         <div class="ui attached message">
             <h3>不具合・要望・質問など</h3>
         </div>
@@ -151,6 +149,6 @@
           </li>
         </div>
       </div>
-  </div>
+  </div> -->
 </body>
 </html>

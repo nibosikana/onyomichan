@@ -12,6 +12,7 @@ $(window).on("load", () => {
 
   //ボタンを追加
   $('body').append('<div id="buttonBox-onyomichan"></div>');
+  $('#buttonBox-onyomichan').append(`<input id="resnumInput-onyomichan" type="number" value="1" max="1000" min="1"/>`)
   $('#buttonBox-onyomichan').append(`<span id="playButton-onyomichan" v-show="pActive" v-bind:style="pStyle" v-on:click="play"><img src="{{ playIcon }}"/></span>`)
   $('#buttonBox-onyomichan').append(`<span id="pauseButton-onyomichan"v-show="!pActive" v-on:click="pause"><img src="{{ pauseIcon }}"/></span>`)
   $('#buttonBox-onyomichan').append(`<span id="stopButton-onyomichan" v-on:click="stop"><img src="{{ stopIcon }}"/></span>`)
@@ -76,12 +77,27 @@ $(window).on("load", () => {
 
 //再生イベント
 const playEvent = () => {
-  let RES = []
-  $('dl').children('dd').each(function( index ) {
-    RES.push($(this.outerHTML).children('ares').empty().parent().text());
-  });
-  RES.forEach(function(val){
-    speechSynthesis(val);
+  var getBody = function(e){
+    if ( !["ARES","DIV"].includes(e.nodeName)){
+      return e.textContent
+    }
+  }
+  let resArray = []
+  let num = document.getElementById('resnumInput-onyomichan').value
+  console.log(num)
+  let dd = document.getElementsByTagName('dd');
+  [...dd].forEach((item) => {
+    let l = {
+      "num":item.getElementsByTagName("ares")[0] ? item.getElementsByTagName("ares")[0].getAttribute("num"): null,
+      "body":[...item.childNodes].map(getBody).filter(Boolean).join('\n')
+    }
+    resArray.push(l)
+  })
+  console.log(resArray)
+  resArray.forEach((item) => {
+    if(Number(num) <= Number(item.num)){
+      speechSynthesis(item.body)
+    }
   })
   newResponse();
 }
@@ -98,8 +114,13 @@ const resetEvent = () => {
 //新しいレスを監視
 const newResponse = () => {
   const target = document.getElementsByClassName('thread')[0];
-  mo = new MutationObserver((data) => {
-    let nText = $(data[0].addedNodes[0].innerHTML).children('ares').empty().parent().text()
+  mo = new MutationObserver((item) => {
+    var getBody = function(e){
+      if ( !["ARES","DIV"].includes(e.nodeName)){
+      return e.textContent
+      }
+    }
+    let nText = [...item[0].addedNodes[0].getElementsByTagName("dd")[0].childNodes].map(getBody).filter(Boolean).join('\n')
     speechSynthesis(nText)
   })
   mo.observe(target,{childList:true})
@@ -120,7 +141,7 @@ const speechSynthesis = (ssText) => {
         return ssText
       })
       let ss = new SpeechSynthesisUtterance();
-      console.log(ssText)
+      //console.log(ssText)
       ss.text = ssText;
       ss.rate = result.voice_data.rateValue;
       ss.pitch = result.voice_data.pitchValue;
@@ -129,5 +150,4 @@ const speechSynthesis = (ssText) => {
       window.speechSynthesis.speak(ss);
     }
   })
-
 }
