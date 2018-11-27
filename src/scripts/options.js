@@ -1,4 +1,4 @@
-
+import rd from './replaceData'
 const optionSetting = new Vue({
   el: 'body',
   data: {
@@ -57,13 +57,14 @@ const optionSetting = new Vue({
 
     initialize_s: function() {
       this.simple_arr = []
-      this.simple_arr.push(
-        {before:'>>',after:'アンカ'},
-        {before:'!aku',after:'アク禁'},
-        {before:"!kaijo",after:'解除'},
-        {before:"J( 'ｰ`)し",after:'マッマ'},
-        {before:"(*^◯^*)",after:'ポジハメ'},
-      )
+      this.simple_arr.push(...rd.simple)
+      // this.simple_arr.push(
+      //   {before:'>>',after:'アンカ'},
+      //   {before:'!aku',after:'アク禁'},
+      //   {before:"!kaijo",after:'解除'},
+      //   {before:"J( 'ｰ`)し",after:'マッマ'},
+      //   {before:"(*^◯^*)",after:'ポジハメ'},
+      // )
     },
 
     delete_s: function(item) {
@@ -86,13 +87,7 @@ const optionSetting = new Vue({
 
     initialize_r: function() {
       this.regexp_arr = []
-      this.regexp_arr.push(
-        {before:"https?://[a-zA-Z0-9\-_\.:@!~*'\(¥);/?&=\+$,%#]+",after:'URL省略。'},
-        {before:'(www*|ｗｗｗ*)',after:'ワラワラ'},
-        {before:'([^a-zA-Z])(w|ｗ)',after:'$1ワラ'},
-        {before:"彡\\(.\\)\\(.\\)",after:'やきう'},
-        {before:"\\(o(‘|')ω(‘|')n\\)",after:'おんちゃん'},
-      )
+      this.regexp_arr.push(...rd.regexp)
     },
 
     delete_r: function(item) {

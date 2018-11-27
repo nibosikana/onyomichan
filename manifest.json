@@ -6,15 +6,15 @@
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
   "browser_action": {
     "default_title": "おんヨミちゃんの設定をする",
-    "default_popup": "html/popup.html"
+    "default_popup": "/views/popup.html"
   },
 
   "background": {
-    "scripts": ["js/background.js"],
+    "scripts": ["/scripts/background.bundle.js"],
     "persistent": false
   },
 
-  "options_page": "html/options.html",
+  "options_page": "/views/options.html",
 
   "content_scripts": [
     {
@@ -22,21 +22,21 @@
         "https://*.open2ch.net/test/read.cgi/*"
       ],
       "js": [
-        "js/vue.min.js",
-        "js/contentscript.js"
+        "scripts/vuejs.bundle.js",
+        "scripts/contentScripts.bundle.js"
       ],
       "css":[
-        "css/style.css"
+        "/styles/style.css"
       ]
     }
   ],
 
   "web_accessible_resources": [
-    "images/*.svg"
+    "/images/*.svg"
   ],
 
   "icons":{
-    "128": "images/onchan128.png"
+    "128": "/images/onchan128.png"
   },
 
   "permissions": [
