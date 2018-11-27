@@ -99,10 +99,11 @@ const playEvent = () => {
 }
 
 //終了イベント
+var _mo;
 const resetEvent = () => {
   window.speechSynthesis.cancel();
-  if(typeof mo !='undefined'){
-    mo.disconnect();
+  if(typeof _mo !='undefined'){
+    _mo.disconnect();
   }else{
   }
 }
@@ -110,16 +111,16 @@ const resetEvent = () => {
 //新しいレスを監視
 const newResponse = () => {
   const target = document.getElementsByClassName('thread')[0];
-  var mo = new MutationObserver((item) => {
+  _mo = new MutationObserver((item) => {
     var getBody = function(e){
-      if ( !["ARES","DIV"].includes(e.nodeName)){
+      if ( !["ARES","DIV","#comment"].includes(e.nodeName)){
       return e.textContent
       }
     }
     let nText = [...item[0].addedNodes[0].getElementsByTagName("dd")[0].childNodes].map(getBody).filter(Boolean).join('\n')
     speechSynthesis(nText)
   })
-  mo.observe(target,{childList:true})
+  _mo.observe(target,{childList:true})
 }
 
 //読み上げる

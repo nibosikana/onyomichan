@@ -54,6 +54,10 @@ export default {
         {
           from: path.join(__dirname,'src', 'images'),
           to: path.join(__dirname, 'dist', 'images'),
+        },
+        {
+          from: path.join(__dirname,'src', 'fonts'),
+          to: path.join(__dirname, 'dist', 'fonts'),
         }
       ]
     )
