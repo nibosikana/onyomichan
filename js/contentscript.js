@@ -1,78 +1,74 @@
-//ウィンドウを閉じたとき
-$(window).on("beforeunload", () => {
-  resetEvent()
-
-});
-
-$(window).on("load", () => {
-  //ボタン画像
-  const buttonIcon = (path) => {
-    return chrome.extension.getURL(path);
-  }
-
-  //ボタンを追加
-  $('body').append('<div id="buttonBox-onyomichan"></div>');
-  $('#buttonBox-onyomichan').append(`<input id="resnumInput-onyomichan" type="number" value="1" max="1000" min="1"/>`)
-  $('#buttonBox-onyomichan').append(`<span id="playButton-onyomichan" v-show="pActive" v-bind:style="pStyle" v-on:click="play"><img src="{{ playIcon }}"/></span>`)
-  $('#buttonBox-onyomichan').append(`<span id="pauseButton-onyomichan"v-show="!pActive" v-on:click="pause"><img src="{{ pauseIcon }}"/></span>`)
-  $('#buttonBox-onyomichan').append(`<span id="stopButton-onyomichan" v-on:click="stop"><img src="{{ stopIcon }}"/></span>`)
-  $('#buttonBox-onyomichan').append(`<span id="eyeButton-onyomichan" v-show="eActive" v-bind:style="eStyle" v-on:click="eye"><img src="{{ eyeIcon }}"/></span>`)
-  $('#buttonBox-onyomichan').append('<span id="redeyeButton-onyomichan" v-show="!eActive" v-bind:style="eStyle" v-on:click="redeye"><img src="{{ redeyeIcon }}"/></span>')
-
-
-  const buttonEvent = new Vue({
-    el: '#buttonBox-onyomichan',
-    data: {
-      playIcon: buttonIcon('images/play.svg'),
-      pauseIcon: buttonIcon('images/pause.svg'),
-      stopIcon: buttonIcon('images/stop.svg'),
-      eyeIcon: buttonIcon('images/eye.svg'),
-      redeyeIcon: buttonIcon('images/redeye.svg'),
-      pStyle: {
-        'pointer-events': 'auto',
+const buttonEvent = new Vue({
+  el: 'body',
+  data: {
+    buttonData:{
+      play: {
+        icon: chrome.extension.getURL('images/play.svg'),
+        style:{'pointer-events': 'auto'},
+        active:true
       },
-      eStyle: {
-        'pointer-events': 'auto',
-      },
-      pActive: true,
-      eActive: true
+      pause: chrome.extension.getURL('images/pause.svg'),
+      stop: chrome.extension.getURL('images/stop.svg'),
+      eye: {
+        icon: chrome.extension.getURL('images/eye.svg'),
+        style: {'pointer-events': 'auto'},
+        active: true
     },
-    methods: {
-      play: function() {
-        this.pActive = false
-        this.eActive = false
-        this.eStyle['pointer-events'] = 'none'
-        if(window.speechSynthesis.speaking){
-          window.speechSynthesis.resume();
-        }else{
-          playEvent()
-        }
-      },
-      pause: function() {
-        this.pActive = true
-        window.speechSynthesis.pause();
-      },
-      stop: function() {
-        this.pActive = true
-        this.eActive = true
-        this.pStyle['pointer-events'] = 'auto'
-        this.eStyle['pointer-events'] = 'auto'
-        resetEvent()
-      },
-      eye: function() {
-        this.eActive = false
-        this.pStyle['pointer-events'] = 'none'
-        newResponse()
-      },
-      redeye: function() {
-        this.eActive = true
-        this.pStyle['pointer-events'] = 'auto'
-        this.eStyle['pointer-events'] = 'auto'
-        resetEvent()
-
-      }
+      redeye: chrome.extension.getURL('images/redeye.svg'),
     }
-  })
+  },
+  created (){
+    const buttonBoxHtml = document.createElement('div');
+    buttonBoxHtml.id = 'buttonBox-onyomichan'
+    buttonBoxHtml.innerHTML =
+    `
+    <input id="resnumInput-onyomichan" type="number" value="1" max="1000" min="1"/>
+    <span id="playButton-onyomichan" v-show="buttonData.play.active" v-bind:style="buttonData.play.style" v-on:click="play"><img src="{{ buttonData.play.icon }}"/></span>
+    <span id="pauseButton-onyomichan"v-show="!buttonData.play.active" v-on:click="pause"><img src="{{ buttonData.pause }}"/></span>
+    <span id="stopButton-onyomichan" v-on:click="stop"><img src="{{ buttonData.stop }}"/></span>
+    <span id="eyeButton-onyomichan" v-show="buttonData.eye.active" v-bind:style="buttonData.eye.style" v-on:click="eye"><img src="{{ buttonData.eye.icon }}"/></span>
+    <span id="redeyeButton-onyomichan" v-show="!buttonData.eye.active" v-bind:style="buttonData.eye.style" v-on:click="redeye"><img src="{{ buttonData.redeye }}"/></span>
+    `
+    document.body.appendChild(buttonBoxHtml);
+  },
+  methods: {
+    play: function() {
+      this.buttonData.play.active = false
+      this.buttonData.eye.active = false
+      this.buttonData.eye.style['pointer-events'] = 'none'
+      if(window.speechSynthesis.speaking){
+        window.speechSynthesis.resume();
+      }else{
+        playEvent()
+      }
+    },
+    pause: function() {
+      this.buttonData.play.active = true
+      window.speechSynthesis.pause();
+    },
+    stop: function() {
+      this.buttonData.play.active = true
+      this.buttonData.eye.active = true
+      this.buttonData.play.style['pointer-events'] = 'auto'
+      this.buttonData.eye.style['pointer-events'] = 'auto'
+      resetEvent()
+    },
+    eye: function() {
+      this.buttonData.eye.active = false
+      this.buttonData.play.style['pointer-events'] = 'none'
+      newResponse()
+    },
+    redeye: function() {
+      this.buttonData.eye.active = true
+      this.buttonData.play.style['pointer-events'] = 'auto'
+      this.buttonData.eye.style['pointer-events'] = 'auto'
+      resetEvent()
+
+    }
+  },
+  beforeDestroy: function () {
+    resetEvent()
+  }
 })
 
 //再生イベント
@@ -82,10 +78,10 @@ const playEvent = () => {
       return e.textContent
     }
   }
-  let resArray = []
-  let num = document.getElementById('resnumInput-onyomichan').value
+  const resArray = []
+  const num = document.getElementById('resnumInput-onyomichan').value
   console.log(num)
-  let dd = document.getElementsByTagName('dd');
+  const dd = document.getElementsByTagName('dd');
   [...dd].forEach((item) => {
     let l = {
       "num":item.getElementsByTagName("ares")[0] ? item.getElementsByTagName("ares")[0].getAttribute("num"): null,

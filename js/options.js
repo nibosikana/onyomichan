@@ -1,39 +1,40 @@
-$(window).on("load", () => {
 
-  chrome.storage.sync.get(null,(result) => {
-    SimpleReplacementSetting.replaceData = result.simple_replace_data;
-    RegExpReplacementSetting.replaceData = result.regexp_replace_data;
-    otherSetting.otherData = result.other_data;
-  })
-  
-  const saveMessage = () => {
-    let message = $('#message')
-    message.removeClass('hidden')
-    setTimeout(() => {
-    message.addClass('hidden')
-    },1800)
-  }
-
-  const setStorage = (key,val) => {
-    chrome.storage.sync.set({[key]:val})
-    saveMessage()
-  }
-
-
-
-  const SimpleReplacementSetting = new Vue({
-    el: '.simple_tikan',
-    data: {
-      inputData: {
-        before: null,
-        after: null
-      },
-      replaceData: [],
-      saveMessage: false
+const optionSetting = new Vue({
+  el: 'body',
+  data: {
+    simple_words:{
+      before: null,
+      after: null
+    },
+    regexp_words:{
+      before: null,
+      after: null
+    },
+    simple_arr: [],
+    regexp_arr: [],
+    otherData: {
+      max_length: null,
+      open2ch_url: null
+    },
+    saveMessage: false
+  },
+  created() {
+    chrome.storage.sync.get(null,(result) => {
+      this.simple_arr = result.simple_replace_data;
+      this.regexp_arr = result.regexp_replace_data;
+      this.otherData = result.other_data;
+    })
   },
   computed: {
-    validation: function() {
-      if(!(this.inputData.before && this.inputData.after)) {
+    validation_s: function() {
+      if(!(this.simple_words.before && this.simple_words.after)) {
+        return true
+      } else {
+        return false
+      }
+    },
+    validation_r: function() {
+      if(!(this.regexp_words.before && this.regexp_words.after)) {
         return true
       } else {
         return false
@@ -41,20 +42,22 @@ $(window).on("load", () => {
     }
   },
   methods: {
-    add: function() {
+    add_s: function() {
       let new_replaceData = {
-        before:this.inputData.before,
-        after:this.inputData.after
+        before:this.simple_words.before,
+        after:this.simple_words.after
       }
-      this.replaceData.push(new_replaceData)
-      this.inputData = {before:null,after:null}
+      this.simple_arr.push(new_replaceData)
+      this.simple_words = {before:null,after:null}
     },
-    save: function() {
-      setStorage('simple_replace_data',this.replaceData)
+
+    save_s: function() {
+      setStorage('simple_replace_data',this.simple_arr)
     },
-    initialize: function() {
-      this.replaceData = []
-      this.replaceData.push(
+
+    initialize_s: function() {
+      this.simple_arr = []
+      this.simple_arr.push(
         {before:'>>',after:'アンカ'},
         {before:'!aku',after:'アク禁'},
         {before:"!kaijo",after:'解除'},
@@ -62,48 +65,28 @@ $(window).on("load", () => {
         {before:"(*^◯^*)",after:'ポジハメ'},
       )
     },
-    delete: function(item) {
-      const index = this.replaceData.indexOf(item)
-      this.replaceData.splice(index, 1)
-    }
-  
-  }
-})
 
-const RegExpReplacementSetting = new Vue({
-  el:'.regexp_tikan',
-  data: {
-    inputData: {
-      before: null,
-      after: null
+    delete_s: function(item) {
+      const index = this.simple_arr.indexOf(item)
+      this.simple_arr.splice(index, 1)
     },
-    replaceData: [],
-    saveMessage: false
-  },
-  computed: {
-    validation: function() {
-      if(!(this.inputData.before && this.inputData.after)) {
-        return true
-      } else {
-        return false
-      }
-    }
-  },
-  methods: {
-    add: function() {
+
+    add_r: function() {
       let new_replaceData = {
-        before:this.inputData.before,
-        after:this.inputData.after
+        before:this.regexp_words.before,
+        after:this.regexp_words.after
       }
-      this.replaceData.push(new_replaceData)
-      this.inputData = {before:null,after:null}
+      this.regexp_arr.push(new_replaceData)
+      this.regexp_words = {before:null,after:null}
     },
-    save: function() {
-      setStorage('regexp_replace_data',this.replaceData)
+
+    save_r: function() {
+      setStorage('regexp_replace_data',this.regexp_arr)
     },
-    initialize: function() {
-      this.replaceData = []
-      this.replaceData.push(
+
+    initialize_r: function() {
+      this.regexp_arr = []
+      this.regexp_arr.push(
         {before:"https?://[a-zA-Z0-9\-_\.:@!~*'\(¥);/?&=\+$,%#]+",after:'URL省略。'},
         {before:'(www*|ｗｗｗ*)',after:'ワラワラ'},
         {before:'([^a-zA-Z])(w|ｗ)',after:'$1ワラ'},
@@ -111,24 +94,13 @@ const RegExpReplacementSetting = new Vue({
         {before:"\\(o(‘|')ω(‘|')n\\)",after:'おんちゃん'},
       )
     },
-    delete: function(item) {
-      const index = this.replaceData.indexOf(item)
-      this.replaceData.splice(index, 1)
-    }
-  }
-})
 
-const otherSetting = new Vue({
-  el: '.other',
-  data: {
-    otherData: {
-      max_length: null,
-      open2ch_url: null
+    delete_r: function(item) {
+      const index = this.regexp_arr.indexOf(item)
+      this.regexp_arr.splice(index, 1)
     },
-    saveMessage: false
-  },
-  methods: {
-    save: function(){
+    
+    save_o: function(){
       setStorage('other_data',
       {
         max_length: this.otherData.max_length,
@@ -137,7 +109,16 @@ const otherSetting = new Vue({
     }
   }
 })
-})
 
+const saveMessage = () => {
+  let message = document.getElementById('message')
+  message.classList.remove('hidden')
+  setTimeout(() => {
+  message.classList.add('hidden')
+  },1800)
+}
 
-  
+const setStorage = (key,val) => {
+  chrome.storage.sync.set({[key]:val})
+  saveMessage()
+}

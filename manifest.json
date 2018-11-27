@@ -23,7 +23,6 @@
       ],
       "js": [
         "js/vue.min.js",
-        "js/jquery-3.2.1.min.js",
         "js/contentscript.js"
       ],
       "css":[

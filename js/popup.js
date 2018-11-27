@@ -1,18 +1,37 @@
-$(window).on("load", () => {
-
-$('.menu .item').tab();
-
-chrome.storage.sync.get(null,(result) => {
-  console.log(result)
-  voiceSetting.voiceData = result.voice_data;
-  voiceSetting.open2ch_url = 'https://' + result.other_data.open2ch_url;
+const voiceSetting = new Vue({
+  el: 'body',
+  data: {
+    voiceData: {
+      rateValue: 1,
+      pitchValue: 1,
+      volumeValue: 1,
+    },
+    open2ch_url: null,
+    saveMessage: false
+  },
+  created(){
+    chrome.storage.sync.get(null,(result) => {
+      console.log(result)
+      voiceSetting.voiceData = result.voice_data;
+      voiceSetting.open2ch_url = 'https://' + result.other_data.open2ch_url;
+    })
+  },
+  methods: {
+    test: function() {
+      window.speechSynthesis.cancel()
+      speechSynthesis(this.voiceData.rateValue,this.voiceData.pitchValue,this.voiceData.volumeValue)
+    },
+    save: function() {
+      setStorage('voice_data',this.voiceData)
+    }
+  }
 })
 
 const saveMessage = () => {
-  let message = $('#message')
-  message.removeClass('hidden')
+  let message = document.getElementById('message')
+  message.classList.remove('hidden')
   setTimeout(() => {
-  message.addClass('hidden')
+  message.classList.add('hidden')
   },1800)
 }
 
@@ -30,29 +49,5 @@ const speechSynthesis = (rate,pitch,volume) => {
   ss.lang = 'ja';
   window.speechSynthesis.speak(ss);
 }
-
-const voiceSetting = new Vue({
-  el: 'body',
-  data: {
-    voiceData: {
-      rateValue: 1,
-      pitchValue: 1,
-      volumeValue: 1,
-    },
-    open2ch_url: null,
-    saveMessage: false
-  },
-  methods: {
-    test: function() {
-      window.speechSynthesis.cancel()
-      speechSynthesis(this.voiceData.rateValue,this.voiceData.pitchValue,this.voiceData.volumeValue)
-    },
-    save: function() {
-      setStorage('voice_data',this.voiceData)
-    }
-  }
-})
-
-})
 
 

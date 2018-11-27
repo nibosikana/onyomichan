@@ -6,10 +6,6 @@
   <link rel="stylesheet" href="/css/semantic.min.css">
   <link rel="stylesheet" href="/css/options.css">
   <script type="text/javascript" src="/js/googleAnalytics.js"></script>
-  <script src="/js/jquery-3.2.1.min.js"></script>
-  <script src="/js/vue.min.js"></script>
-  <script src="/js/semantic.min.js"></script>
-  <script src="/js/options.js"></script>
 </head>
 <body>
   <div class="header">
@@ -27,18 +23,18 @@
         <div class="ui form">
           <div class="field">
             <label>置換前:</label>
-            <input type="text" v-model="inputData.before" placeholder="入力する...">
+            <input type="text" v-model="simple_words.before" placeholder="入力する...">
           </div>
         </div>
         <div class="ui form">
           <div class="field">
             <label>置換後:</label>
-            <input type="text" v-model="inputData.after" placeholder="入力する...">
+            <input type="text" v-model="simple_words.after" placeholder="入力する...">
           </div>
         </div>
-        <button class="ui orange button" v-on:click="add" :disabled="validation" style="margin-top: 20px">追加</button>
-        <button class="ui blue button" v-on:click="save" style="margin-top: 20px">保存</button>
-        <button class="ui grey button" v-on:click="initialize">初期化</button>
+        <button class="ui orange button" v-on:click="add_s" :disabled="validation_s" style="margin-top: 20px">追加</button>
+        <button class="ui blue button" v-on:click="save_s" style="margin-top: 20px">保存</button>
+        <button class="ui grey button" v-on:click="initialize_s">初期化</button>
         </div>
       <div class="ui attached fluid segment">
         <table class="ui celled fixed unstackable table">
@@ -50,11 +46,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in replaceData">
+            <tr v-for="item in simple_arr">
               <td>{{ item.before }}</td>
               <td>{{ item.after }}</td>
               <td>
-                <button class="ui compact icon button" v-on:click="delete(item)">
+                <button class="ui compact icon button" v-on:click="delete_s(item)">
                   <i class="times icon"></i>
                 </button>
               </td>
@@ -71,18 +67,18 @@
         <div class="ui form">
           <div class="field">
             <label>置換前:</label>
-            <input type="text" v-model="inputData.before" placeholder="入力する...">
+            <input type="text" v-model="regexp_words.before" placeholder="入力する...">
           </div>
         </div>
         <div class="ui form">
           <div class="field">
             <label>置換後:</label>
-            <input type="text" v-model="inputData.after" placeholder="入力する...">
+            <input type="text" v-model="regexp_words.after" placeholder="入力する...">
           </div>
         </div>
-        <button class="ui orange button" v-on:click="add" :disabled="validation" style="margin-top: 20px">追加</button>
-        <button class="ui blue button" v-on:click="save" style="margin-top: 20px">保存</button>
-        <button class="ui grey button" v-on:click="initialize">初期化</button>        
+        <button class="ui orange button" v-on:click="add_r" :disabled="validation_r" style="margin-top: 20px">追加</button>
+        <button class="ui blue button" v-on:click="save_r" style="margin-top: 20px">保存</button>
+        <button class="ui grey button" v-on:click="initialize_r">初期化</button>        
         </div>
       <div class="ui attached fluid segment">
         <table class="ui celled fixed unstackable table">
@@ -94,11 +90,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in replaceData">
+            <tr v-for="item in regexp_arr">
               <td>{{ item.before }}</td>
               <td>{{ item.after }}</td>
               <td>
-                <button class="ui compact icon button" v-on:click="delete(item)">
+                <button class="ui compact icon button" v-on:click="delete_r(item)">
                   <i class="times icon"></i>
                 </button>
               </td>
@@ -128,7 +124,7 @@
             </div>
           </div>
         </div>
-        <button class="ui blue button" v-on:click="save" style="margin-top: 20px">保存</button>
+        <button class="ui blue button" v-on:click="save_o" style="margin-top: 20px">保存</button>
       </div>
     </div>
     <!-- <div class="question">
@@ -150,5 +146,7 @@
         </div>
       </div>
   </div> -->
+  <script src="/js/vue.min.js"></script>
+  <script src="/js/options.js"></script>
 </body>
 </html>
