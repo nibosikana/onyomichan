@@ -110,7 +110,7 @@ const resetEvent = () => {
 //新しいレスを監視
 const newResponse = () => {
   const target = document.getElementsByClassName('thread')[0];
-  mo = new MutationObserver((item) => {
+  var mo = new MutationObserver((item) => {
     var getBody = function(e){
       if ( !["ARES","DIV"].includes(e.nodeName)){
       return e.textContent

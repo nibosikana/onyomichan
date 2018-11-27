@@ -22,7 +22,7 @@
         "https://*.open2ch.net/test/read.cgi/*"
       ],
       "js": [
-        "scripts/vuejs.bundle.js",
+        "scripts/vue.min.js",
         "scripts/contentScripts.bundle.js"
       ],
       "css":[
