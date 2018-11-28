@@ -10,10 +10,10 @@
 あとで
 
 ## Demo
-あとで
+いつか
 
 ## Licence
-[MIT](https://github.com/tcnksm/tool/blob/master/LICENCE)
+[MIT](https://github.com/ellreka/onyomichan/blob/master/LICENSE)
 
 ## Author
 [＠ellreka](https://twitter.com/ellreka)
