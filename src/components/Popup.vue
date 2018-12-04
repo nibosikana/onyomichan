@@ -4,7 +4,7 @@
     <div class="ui inverted menu teal">
       <div class="right item">
         <a class="ui inverted button" v-bind:href="open2ch_url" target="_blank">open2ch</a>   
-        <a class="ui inverted button" id='top' href="chrome-extension://onmhkgkgngndakhakokgfgopchckepfd/src/views/options.html" target="_blank" style="margin-left:5px">設定</a>
+        <a class="ui inverted button" id='top' href="chrome-extension://onmhkgkgngndakhakokgfgopchckepfd/views/options.html" target="_blank" style="margin-left:5px">設定</a>
       </div>
     </div>
   </div>
