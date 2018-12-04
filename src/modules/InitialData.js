@@ -1,3 +1,16 @@
+const voice = {
+  rateValue: 1,
+  pitchValue: 1,
+  volumeValue: 1
+}
+
+
+const other = {
+  max_length: 10000,
+  open2ch_url: 'open2ch.net/'
+}
+
+
 const simple = [
   {before:'>>',after:'アンカ'},
   {before:'!aku',after:'アク禁'},
@@ -14,5 +27,4 @@ const regexp = [
   {before:"\\(o(‘|')ω(‘|')n\\)",after:'おんちゃん'},
 ]
 
-export default { simple,regexp }
-// let k; export default k = 12;
+export default { voice,other,simple,regexp }

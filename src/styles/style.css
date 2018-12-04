@@ -19,6 +19,15 @@
   cursor: pointer;
 }
 
+#pauseButton-onyomichan {
+  display:none;
+}
+
+#redeyeButton-onyomichan {
+  display:none;
+  pointer-events: none;
+}
+
 #buttonBox-onyomichan span img {
   width: 20px;
   margin-left: 4px;

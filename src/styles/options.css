@@ -1,8 +1,0 @@
-@font-face {
-  font-family: 'Icons';
-  src: url("/fonts/icons.woff2") format('woff');
-}
-
-.main {
-  margin-top: 60px;
-}

@@ -2,37 +2,12 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="../styles/semantic.min.css">
-  <link rel="stylesheet" href="../styles/popup.css">
-  <script type="text/javascript" src="../scripts/googleAnalytics.js"></script>
+  <title>popup</title>
 </head>
 <body>
-  <div class="header">
-    <div class="ui inverted menu teal">
-      <div class="right item">
-        <a class="ui inverted button" v-bind:href="open2ch_url" target="_blank">open2ch</a>   
-        <a class="ui inverted button" id='top' href="chrome-extension://onmhkgkgngndakhakokgfgopchckepfd/src/views/options.html" target="_blank" style="margin-left:5px">設定</a>
-      </div>
-    </div>
+  <div id="app">
+    <popup></popup>
   </div>
-  <div id="message" class="ui hidden fixed menu success message" style="margin-top:43px">保存しました</div>
-  <div class="onsei">
-    <div class="ui attached message">
-      <h4>音声設定</h4>
-    </div>
-    <div class="ui attached fluid segment">
-      <p>レート:{{ voiceData.rateValue }}</p>
-      <input type="range" id="rate-range" min="0.1" max="3" step="0.1" v-model="voiceData.rateValue"/>
-      <p>ピッチ:{{ voiceData.pitchValue }}</p>
-      <input type="range" id="pitch-range" min="0" max="2" step="0.1" v-model="voiceData.pitchValue"/>
-      <p>ボリューム:{{ voiceData.volumeValue }}</p>
-      <input type="range" id="volume-range" min="0" max="1" step="0.1" v-model="voiceData.volumeValue"/>
-      <button class="ui green button" style="margin-top: 30px" v-on:click="test">テスト</button>
-      <button class="ui blue button" style="margin-top: 30px" v-on:click="save">保存</button>
-      <span class="ui teal header" v-show="saveMessage">保存しました</span>
-    </div>
-  </div>
+  <script src="../scripts/popup.bundle.js"></script>
 </body>
-<script src="../scripts/vue.min.js"></script>
-<script src="../scripts/popup.bundle.js"></script>
 </html>

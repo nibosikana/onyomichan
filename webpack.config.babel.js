@@ -1,11 +1,13 @@
 import path from 'path';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import VueLoaderPlugin from 'vue-loader/lib/plugin';
 
 export default {
   entry: {
     contentScripts: path.join(__dirname, 'src', 'scripts', 'contentScript.js'),
     background: path.join(__dirname, 'src', 'scripts', 'background.js'),
     options: path.join(__dirname, 'src', 'scripts', 'options.js'),
+    // options: path.join(__dirname, 'src', 'components', 'Hello.vue'),
     popup: path.join(__dirname, 'src', 'scripts', 'popup.js'),
 
   },
@@ -26,9 +28,29 @@ export default {
         test: /\.js$/,
         use: { loader: 'babel-loader' }
       },
+      {
+        test: /\.vue$/,
+        use: { loader: 'vue-loader' },
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'vue-style-loader',
+          'css-loader'
+        ]
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|svg)$/,
+        loader: 'file-loader?name=../dist/fonts/[name].[ext]'
+      },
+      {
+        test: /\.(jpg|png)$/,
+        loaders: 'url-loader'
+      },
     ]
   },
   plugins: [
+    new VueLoaderPlugin(),
     new CopyWebpackPlugin(
       [
         {
@@ -37,10 +59,6 @@ export default {
         },
         {
           from: path.join(__dirname,'src', 'scripts', 'googleAnalytics.js'),
-          to: path.join(__dirname, 'dist', 'scripts'),
-        },
-        {
-          from: path.join(__dirname,'src', 'scripts', 'vue.min.js'),
           to: path.join(__dirname, 'dist', 'scripts'),
         },
         {
@@ -55,10 +73,10 @@ export default {
           from: path.join(__dirname,'src', 'images'),
           to: path.join(__dirname, 'dist', 'images'),
         },
-        {
-          from: path.join(__dirname,'src', 'fonts'),
-          to: path.join(__dirname, 'dist', 'fonts'),
-        }
+        // {
+        //   from: path.join(__dirname,'src', 'fonts'),
+        //   to: path.join(__dirname, 'dist', 'fonts'),
+        // }
       ]
     )
   ]
