@@ -40,7 +40,7 @@ export default {
       },
       {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
-        loader: 'file-loader?name=../dist/[name].[ext]'
+        loader: 'file-loader?name=../dist/fonts/[name].[ext]'
       },
       {
         test: /\.(jpg|png)$/,
