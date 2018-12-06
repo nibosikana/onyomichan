@@ -1,9 +1,9 @@
 window.onload = () => {
-  const playIcon = chrome.extension.getURL('../images/play.svg');
-  const pauseIcon = chrome.extension.getURL('../images/pause.svg');
-  const stopIcon = chrome.extension.getURL('../images/stop.svg');
-  const eyeIcon = chrome.extension.getURL('../images/eye.svg');
-  const redeyeIcon = chrome.extension.getURL('../images/redeye.svg');
+  const playIcon = chrome.extension.getURL('play.svg');
+  const pauseIcon = chrome.extension.getURL('pause.svg');
+  const stopIcon = chrome.extension.getURL('stop.svg');
+  const eyeIcon = chrome.extension.getURL('eye.svg');
+  const redeyeIcon = chrome.extension.getURL('redeye.svg');
 
   
   const buttonBoxHtml = document.createElement('div');

@@ -4,7 +4,7 @@
     <div class="ui inverted menu teal">
       <div class="right item">
         <a class="ui inverted button" v-bind:href="open2ch_url" target="_blank">open2ch</a>   
-        <a class="ui inverted button" id='top' href="chrome-extension://onmhkgkgngndakhakokgfgopchckepfd/views/options.html" target="_blank" style="margin-left:5px">設定</a>
+        <a class="ui inverted button" id='top' href="chrome-extension://onmhkgkgngndakhakokgfgopchckepfd/options.html" target="_blank" style="margin-left:5px">設定</a>
       </div>
     </div>
   </div>
@@ -49,7 +49,7 @@ export default {
       this.voiceData.rateValue = result.voice_data.rateValue,
       this.voiceData.pitchValue = result.voice_data.pitchValue,
       this.voiceData.volumeValue = result.voice_data.volumeValue,
-      this.open2ch_url = result.open2ch_url
+      this.open2ch_url = 'https://' + result.other_data.open2ch_url
     })
   },
   components: {

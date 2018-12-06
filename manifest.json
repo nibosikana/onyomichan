@@ -2,19 +2,19 @@
   "manifest_version": 2,
   "name": "おんヨミちゃん",
   "description": "おーぷん２ちゃんねるのスレッドを読み上げる拡張機能です",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
   "browser_action": {
     "default_title": "おんヨミちゃんの設定をする",
-    "default_popup": "/views/popup.html"
+    "default_popup": "popup.html"
   },
 
   "background": {
-    "scripts": ["/scripts/background.bundle.js"],
+    "scripts": ["background.bundle.js"],
     "persistent": false
   },
 
-  "options_page": "/views/options.html",
+  "options_page": "options.html",
 
   "content_scripts": [
     {
@@ -22,20 +22,20 @@
         "https://*.open2ch.net/test/read.cgi/*"
       ],
       "js": [
-        "scripts/contentScripts.bundle.js"
+        "contentScripts.bundle.js"
       ],
       "css":[
-        "/styles/style.css"
+        "style.css"
       ]
     }
   ],
 
   "web_accessible_resources": [
-    "/images/*.svg"
+    "*.svg"
   ],
 
   "icons":{
-    "128": "/images/onchan128.png"
+    "128": "onchan128.png"
   },
 
   "permissions": [

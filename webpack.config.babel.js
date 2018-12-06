@@ -7,13 +7,12 @@ export default {
     contentScripts: path.join(__dirname, 'src', 'scripts', 'contentScript.js'),
     background: path.join(__dirname, 'src', 'scripts', 'background.js'),
     options: path.join(__dirname, 'src', 'scripts', 'options.js'),
-    // options: path.join(__dirname, 'src', 'components', 'Hello.vue'),
     popup: path.join(__dirname, 'src', 'scripts', 'popup.js'),
 
   },
   output: {
     path: path.join(__dirname, "dist"),
-    filename: 'scripts/[name].bundle.js',
+    filename: '[name].bundle.js',
   },
   mode: 'production',
   target: 'web',
@@ -41,7 +40,7 @@ export default {
       },
       {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
-        loader: 'file-loader?name=../dist/fonts/[name].[ext]'
+        loader: 'file-loader?name=../dist/[name].[ext]'
       },
       {
         test: /\.(jpg|png)$/,
@@ -59,24 +58,20 @@ export default {
         },
         {
           from: path.join(__dirname,'src', 'scripts', 'googleAnalytics.js'),
-          to: path.join(__dirname, 'dist', 'scripts'),
+          to: path.join(__dirname, 'dist'),
         },
         {
           from: path.join(__dirname,'src', 'views'),
-          to: path.join(__dirname, 'dist', 'views'),
+          to: path.join(__dirname, 'dist'),
         },
         {
           from: path.join(__dirname,'src', 'styles'),
-          to: path.join(__dirname, 'dist', 'styles'),
+          to: path.join(__dirname, 'dist'),
         },
         {
           from: path.join(__dirname,'src', 'images'),
-          to: path.join(__dirname, 'dist', 'images'),
-        },
-        // {
-        //   from: path.join(__dirname,'src', 'fonts'),
-        //   to: path.join(__dirname, 'dist', 'fonts'),
-        // }
+          to: path.join(__dirname, 'dist'),
+        }
       ]
     )
   ]
